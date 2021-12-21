@@ -1,0 +1,125 @@
+* {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.object-fit-cover {
+	object-fit: cover;
+}
+.hover-border-primary:hover {
+	border-color: #0d6efd !important;
+}
+#hidden-after::after {
+	content: none !important;
+}
+#optionFeed::after {
+	content: none !important;
+}
+.ul-none {
+	list-style-type: none;
+}
+.z-index-2000 {
+	z-index: 2000;
+}
+.y-divide::after {
+	content: '';
+	padding: 1px;
+	height: 100px;
+	background: rgb(228, 228, 228);
+}
+.one-line{
+    white-space: nowrap;
+    width: fit-content;
+}
+
+/* <sm */
+@media only screen and (max-width: 575px) {
+	.ws-nowrap {
+		white-space: nowrap;
+	}
+    .image-review > img{
+        height: 55px;
+        width: 55px;
+    }
+}
+/* sm */
+@media only screen and (min-width: 576px) {
+	.cus-content-sider-category {
+		margin-left: 12px;
+		margin-right: 12px;
+		margin-bottom: 0;
+		margin-top: 10px;
+	}
+
+	.cus-content-sider-category > li {
+		min-width: 250px;
+	}
+    .cus-content-scroll-category > li > div {
+		width: 9rem;
+	}
+	.cus-content-scroll-category > li > div > div {
+		height: 6rem;
+	}
+    .image-review > img{
+        height: 60px;
+        width: 60px;
+    }
+}
+
+/* md */
+@media only screen and (min-width: 768px) {
+	.cus-content-sider-category {
+		margin: 0 auto;
+		margin-top: 10px;
+	}
+    .wrap-main-image{
+        width: 290px;
+    }
+    #main-image{
+        width: 290px;
+        height: 290px;
+    }
+    .wrap-item-image{
+        margin-left: 0.75rem;
+        height: 200px;
+    }
+    .image-review > img{
+        height: 77px;
+        width: 77px;
+    }
+}
+
+/* lg */
+@media only screen and (min-width: 992px) {
+	.position-lg-sticky {
+		position: sticky !important;
+	}
+	.cus-content-sider-category {
+		margin: auto;
+	}
+	.cus-content-sider-category .wrap-img-category {
+		height: 60px;
+	}
+	.w-lg-auto {
+		width: auto !important;
+	}
+    .image-review > img{
+        height: 87px;
+        width: 87px;
+    }
+}
+
+/* xl */
+@media only screen and (min-width: 1200px) {
+	.cus-content-sider-category .wrap-img-category {
+		height: 70px;
+	}
+	.cus-content-scroll-category > li > div {
+		width: 11rem;
+	}
+	.cus-content-scroll-category > li > div > div {
+		height: 7rem;
+	}
+}
+/* xxl */
+@media only screen and (min-width: 1400px) {
+}
