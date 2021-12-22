@@ -37,7 +37,7 @@ public class FeedComment implements Serializable{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Feed feed;
 

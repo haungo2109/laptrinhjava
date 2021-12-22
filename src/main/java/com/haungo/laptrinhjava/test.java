@@ -22,7 +22,6 @@ public class test {
         Auction auction = new Auction();
         auction.setDeadline(new Date());
         auction.setTitle("ddds");
-        auction.setBasePrice(1221F);
         auction.setDeadline(new Date());
         session.save(auction);
         System.out.println("Success");

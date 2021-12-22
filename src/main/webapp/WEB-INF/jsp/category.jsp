@@ -175,7 +175,7 @@
                             <div class="card position-relative border-0 m-2">
                                 <c:if test="${auction.images != null && auction.images.size() > 0}">
                                     <img
-                                        src="${auction.images[0].image}"
+                                        src="${auction.images.iterator().next().image}"
                                         class="card-img-top object-fit-cover"
                                         />
                                 </c:if>

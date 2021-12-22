@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+
 @Repository
 public class AuctionRepositoryImpl implements AuctionRepository {
     @Autowired
@@ -75,7 +76,8 @@ public class AuctionRepositoryImpl implements AuctionRepository {
         auction.setRating(null);
         auction.setCountComment(0);
         auction.setActive(true);
-        auction.setStatusAuction(null);
+        auction.setCurrentPrice(auction.getBasePrice());
+        auction.setStatusAuction(StatusAuction.being.toString());
         Session session = this.sessionFactory.getObject().getCurrentSession();
 
         Category category = session.get(Category.class, Integer.parseInt(auction.getCategoryId()));
@@ -113,5 +115,47 @@ public class AuctionRepositoryImpl implements AuctionRepository {
     @Transactional
     public List<Auction> getAuctionJoin(Integer uid) {
         return null;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean setBuyler(Integer uid, Integer auctionId) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+
+        try {
+            Auction auction = session.get(Auction.class, auctionId);
+            User user = session.get(User.class, uid);
+//            Query q = session.createQuery("FROM AuctionComment A WHERE A.auction.id =:id and A.user.id =:uid ");
+//            q.setParameter("id", auctionId);
+//            q.setParameter("uid", uid);
+//
+//            AuctionComment auctionComment = (AuctionComment) q.getResultList().get(0);
+
+            if (auction == null || user == null) return false;
+            auction.setBuyler(user);
+            auction.setStatusAuction(StatusAuction.inprocess.toString());
+            auction.getComments();
+            AuctionComment auctionComment = auction.getCommentByUserId(uid);
+            auctionComment.setStatusTransaction(StatusTransaction.inprocess.toString());
+
+            session.update(auction);
+            session.saveOrUpdate(auctionComment);
+            return true;
+        } catch (HibernateException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean setFailer(Integer uid, Integer auctionId) {
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public boolean cancelAuction(Integer auctionId) {
+        return false;
     }
 }

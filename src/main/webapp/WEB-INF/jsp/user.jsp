@@ -243,7 +243,7 @@
                                         class="d-block wrap-item-image"
                                         >
                                         <img
-                                            src="${auction.images[0].image}"
+                                            src="${auction.images.iterator().next().image}"
                                             class="
                                             object-fit-cover
                                             h-100
@@ -252,18 +252,6 @@
                                             "
                                             width="100%"
                                             />
-                                        <button
-                                            type="button"
-                                            class="
-                                            btn btn-light
-                                            position-absolute
-                                            top-0
-                                            end-0
-                                            translate-middle
-                                            "
-                                            >
-                                            <i class="far fa-heart"></i>
-                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-md-5 pt-3">
@@ -570,7 +558,7 @@
                             <div class="card position-relative border-0 m-2">
                                 <c:if test="${auction.images != null && auction.images.size() > 0}">
                                     <img
-                                        src="${auction.images[0].image}"
+                                        src="${auction.images.iterator().next().image}"
                                         class="card-img-top object-fit-cover"
                                         />
                                 </c:if>

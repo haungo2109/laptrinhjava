@@ -5,10 +5,7 @@
 package com.haungo.pojos;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.*;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +76,7 @@ public class Feed implements Serializable {
     public void checkIsLike(Integer uid){
         if (this.likes != null && !this.likes.isEmpty()) {
             for (User u: this.likes){
-                if (u.getId() == uid) {
+                if (u.getId().equals(uid)) {
                     this.setIsUserLike(true);
                     break;
                 }
@@ -90,7 +87,7 @@ public class Feed implements Serializable {
     public void removeLike(Integer uid){
         Set<User> users = new HashSet<>();
         for (User u: this.likes){
-            if (u.getId() != uid) users.add(u);
+            if (!u.getId().equals(uid)) users.add(u);
         }
         this.setLikes(users);
     }

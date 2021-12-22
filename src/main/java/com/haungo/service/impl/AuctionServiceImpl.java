@@ -5,17 +5,13 @@ import com.cloudinary.utils.ObjectUtils;
 import com.haungo.pojos.Auction;
 import com.haungo.pojos.AuctionImage;
 import com.haungo.repository.AuctionRepository;
-import com.haungo.repository.FeedImageRepository;
 import com.haungo.service.AuctionService;
-import com.haungo.service.FeedImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AuctionServiceImpl implements AuctionService {
@@ -43,7 +39,7 @@ public class AuctionServiceImpl implements AuctionService {
                     "overwrite", true,
                     "resource_type", "auto"
             );
-            List<AuctionImage> auctionImages = new ArrayList<>();
+            Set<AuctionImage> auctionImages = new HashSet<>();
             for (MultipartFile multipartFile : files) {
                 try {
                     Map r = this.cloudinary.uploader().upload(multipartFile.getBytes(), params);
@@ -66,5 +62,20 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public List<Auction> getAuctionJoin(Integer uid) {
         return null;
+    }
+
+    @Override
+    public boolean setBuyler(Integer uid, Integer auctionId) {
+        return this.auctionRepository.setBuyler(uid, auctionId);
+    }
+
+    @Override
+    public boolean setFailer(Integer uid, Integer auctionId) {
+        return this.auctionRepository.setFailer(uid, auctionId);
+    }
+
+    @Override
+    public boolean cancelAuction(Integer auctionId) {
+        return this.auctionRepository.cancelAuction(auctionId);
     }
 }

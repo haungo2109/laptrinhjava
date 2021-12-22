@@ -7,8 +7,8 @@ package com.haungo.pojos;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -20,24 +20,20 @@ public class Auction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotNull
-    @NotBlank(message = "{validate.notblank}")
+
+    @NotNull(message = "{validate.notblank}")
     private String title;
 
-    @Column(nullable = false)
-    @NotNull
-    @NotBlank(message = "{validate.notblank}")
+    @NotNull(message = "{validate.notblank}")
     private String content;
 
-    @Column(name = "create_at", nullable = false)
+    @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
     private boolean active = true;
 
     @Column(name = "base_price")
-    private Float basePrice;
-
-    @Column
+    private Double basePrice;
     private String condition;
     private Date deadline;
 
@@ -49,29 +45,34 @@ public class Auction implements Serializable {
     private Date dateSuccess;
 
     @Column(name = "accept_price")
-    private Float acceptPrice;
+    private Double acceptPrice;
+
+    @Column(name = "current_price")
+    private Double currentPrice;
 
     @Column(name = "status_auction")
-    @Enumerated(EnumType.STRING)
-    private StatusAuction statusAuction;
+    private String statusAuction;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "buyer_id", referencedColumnName = "id")
     private User buyler;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "payment_method_id", referencedColumnName = "id")
     private Payment payment;
     private Integer rating;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "auction", cascade = CascadeType.REMOVE)
-    private List<AuctionImage> images;
+    private Set<AuctionImage> images;
 
-    @ManyToOne()
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "auction", cascade = CascadeType.REMOVE)
+    private Set<AuctionComment> comments;
+
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
@@ -82,15 +83,20 @@ public class Auction implements Serializable {
     @Transient
     private String date;
 
-    public Auction(){};
-    public Auction(String title, String content, Float basePrice){
+    public Auction(){}
+    public Auction(String title, String content, Double basePrice){
         this.title= title;
         this.basePrice = basePrice;
         this.content = content;
         this.deadline = new Date();
         this.createAt = new Date();
     }
-
+    public AuctionComment getCommentByUserId(Integer id){
+        for (AuctionComment auctionComment: this.comments){
+            if (auctionComment.getUser().getId().equals(id)) return auctionComment;
+        }
+        return null;
+    }
     public List<MultipartFile> getFiles() {
         return files;
     }
@@ -134,14 +140,14 @@ public class Auction implements Serializable {
     /**
      * @return the basePrice
      */
-    public Float getBasePrice() {
+    public Double getBasePrice() {
         return basePrice;
     }
 
     /**
      * @param basePrice the basePrice to set
      */
-    public void setBasePrice(Float basePrice) {
+    public void setBasePrice(Double basePrice) {
         this.basePrice = basePrice;
     }
 
@@ -190,34 +196,17 @@ public class Auction implements Serializable {
     /**
      * @return the acceptPrice
      */
-    public Float getAcceptPrice() {
+    public Double getAcceptPrice() {
         return acceptPrice;
     }
 
     /**
      * @param acceptPrice the acceptPrice to set
      */
-    public void setAcceptPrice(Float acceptPrice) {
+    public void setAcceptPrice(Double acceptPrice) {
         this.acceptPrice = acceptPrice;
     }
 
-    /**
-     * @return the statusAuction
-     */
-    public StatusAuction getStatusAuction() {
-        return statusAuction;
-    }
-
-    /**
-     * @param statusAuction the statusAuction to set
-     */
-    public void setStatusAuction(StatusAuction statusAuction) {
-        this.statusAuction = statusAuction;
-    }
-
-    /**
-     * @return the category
-     */
     public Category getCategory() {
         return category;
     }
@@ -285,11 +274,11 @@ public class Auction implements Serializable {
         this.active = active;
     }
 
-    public List<AuctionImage> getImages() {
+    public Set<AuctionImage> getImages() {
         return images;
     }
 
-    public void setImages(List<AuctionImage> images) {
+    public void setImages(Set<AuctionImage> images) {
         this.images = images;
     }
 
@@ -323,5 +312,29 @@ public class Auction implements Serializable {
 
     public void setCountComment(Integer countComment) {
         this.countComment = countComment;
+    }
+
+    public String getStatusAuction() {
+        return statusAuction;
+    }
+
+    public void setStatusAuction(String statusAuction) {
+        this.statusAuction = statusAuction;
+    }
+
+    public Double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(Double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public Set<AuctionComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<AuctionComment> comments) {
+        this.comments = comments;
     }
 }

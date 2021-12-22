@@ -219,17 +219,18 @@
                         </c:forEach>
                     </c:if>
                     <c:if test="${auctions != null}" >
-                        <h4 class="fs-4 mt-md-3 mb-md-2 mt-2 mb-1 item-feed-content m-auto">Các sản phẩm nổi bật</h4>
+                        <h4 class="fs-4 mt-md-3 mb-md-2 mt-2 mb-1 item-feed-content m-auto">Các đấu giá nổi bật</h4>
                         <c:forEach items="${auctions}" var="auction">
                             <div class="d-flex flex-column pt-3">
                                 <div class="mx-auto item-feed-content">
                                     <div class="card shadow-sm">
                                         <div class="card-header p-0 mx-3 mt-3 position-relative z-index-1">
-                                            <a href="<c:url value="/auction/${auction.id}" />" class="d-block">
+                                            <a href="<c:url value='/auction/${auction.id}' />" class="d-block">
                                                 <img 
-                                                    src="${auction.images[0].image}" 
-                                                    class="img-fluid rounded rounded-3"
+                                                    src="${auction.images.iterator().next().image}" 
+                                                    class="rounded rounded-3 object-fit-cover"
                                                     width="100%"
+                                                    height="345px"
                                                     >
                                             </a>
                                         </div>
@@ -237,7 +238,7 @@
                                             <h5 class="text-gradient text-warning text-uppercase text-xs font-weight-bold my-2">
                                                 ${auction.basePrice}
                                             </h5>
-                                            <a href="<c:url value="/auction/${auction.id}" />" class="text-dark h5 d-block">
+                                            <a href="<c:url value='/auction/${auction.id}' />" class="text-dark h5 d-block">
                                                 ${auction.title}
                                             </a>
                                             <p class="card-description mb-2">
@@ -497,14 +498,3 @@
     </div>
 </c:if>
 <!--End Modal edit feed-->
-
-
-<script>
-    let items = document.getElementsByClassName("time-feed");
-    for (const c of items) {
-        let t = new Date(c.textContent);
-        if (t.getTime()) {
-            c.textContent = timeSince(t);
-        }
-    }
-</script>

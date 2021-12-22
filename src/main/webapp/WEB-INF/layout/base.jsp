@@ -61,5 +61,22 @@
                 <script src="<c:url value="${script}"/>"></script>
             </c:forEach>
         </c:if>
+        <script>
+            let items = document.getElementsByClassName("time-feed");
+            for (const c of items) {
+                let t = new Date(c.textContent.trim());
+                if (t.getTime()) {
+                    c.textContent = timeSince(t);
+                }
+            }
+            
+            let itemTimeLeft = document.getElementsByClassName("time-left");
+            for (const c of itemTimeLeft) {
+                let t = new Date(c.textContent.trim());
+                if (t.getTime()) {
+                    c.textContent = futureSince(t);
+                }
+            }
+        </script>
     </body>
 </html>
