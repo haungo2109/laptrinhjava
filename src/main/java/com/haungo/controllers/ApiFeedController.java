@@ -25,8 +25,7 @@ import java.util.Set;
 
 @RestController
 public class ApiFeedController {
-    @Autowired
-    private FeedService feedService;
+    @Autowired private FeedService feedService;
     @Autowired private FeedCommentService feedCommentService;
 
     @PostMapping(value = "/api/like-feed", produces = MediaType.APPLICATION_JSON_VALUE)

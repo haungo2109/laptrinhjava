@@ -137,13 +137,18 @@
                                                                     </li>
                                                                     <li>
                                                                         <button class="btn dropdown-item" onclick="deleteFeed(${feed.id})">
-                                                                            <i class="far fa-trash-alt" style="width: 22px;"></i> Xóa</button>
+                                                                            <i class="far fa-trash-alt" style="width: 22px;"></i> Xóa
+                                                                        </button>
                                                                     </li>
                                                                 </c:when>
-                                                                <c:otherwise>
-                                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-exclamation" style="width: 22px;"></i> Báo cáo</a></li>
-                                                                    </c:otherwise>
-                                                                </c:choose>
+                                                                <c:when test="${currentUser != null}">
+                                                                    <li>
+                                                                        <button class="btn dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#reportModal" onclick="showReport(${feed.user.id})">
+                                                                            <i class="fas fa-exclamation" style="width: 22px;"></i> Báo cáo
+                                                                        </button>
+                                                                    </li>
+                                                                </c:when>
+                                                            </c:choose>
                                                         </ul>
                                                     </div>
                                                 </c:if>
@@ -498,3 +503,75 @@
     </div>
 </c:if>
 <!--End Modal edit feed-->
+
+
+<!--Modal report-->
+<c:if test="${currentUser != null && typeReports != null}">
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0 position-relative">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 z-index-2000 p-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="card m-0 w-100 border-0">
+                        <div class="card-body my-3">
+                            <h3 class="mb-2 mb-md-3 m-auto">Báo cáo</h3>
+                            <form id="form-report" name="form-report">
+                                <div class="textInvalidForm" id="errorMessageReport">
+
+                                </div>
+                                <select class="form-select mb-md-3 mb-2" name="typeReportId" id="typeReportId" required>
+                                    <option selected value="${typeReports[0].id}">${typeReports[0].name}</option>
+                                    <c:forEach items="${typeReports}" var="typeReport" begin="1" >
+                                        <option value="${typeReport.id}">${typeReport.name}</option>
+                                    </c:forEach>
+                                </select>
+                                <div class="mb-2 mb-md-3">
+                                    <textarea class="form-control w-100"
+                                              name="content"
+                                              id="content"
+                                              placeholder="Nội dung báo cáo"
+                                              required
+                                              rows="3"
+                                              ></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary text-uppercase w-100 mt-3">Gửi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector("#form-report button[type='submit']")
+                .addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let reportModal = document.getElementById("reportModal");
+                    let myForm = document.getElementById('form-report');
+                    let formData = new FormData(myForm);
+
+                    if (!formData.get("content")) {
+                        document.getElementById("errorMessageReport").textContent = "Vui lòng điền nội dung"
+                        return;
+                    }
+                    let url = "/laptrinhjava/api/add-report/" + myForm.getAttribute('data-user-report-id');
+                    let body = JSON.stringify(Object.fromEntries(formData));
+
+                    fetch(url, {
+                        method: "post",
+                        body,
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then((response) => {
+                        if (response.status !== 200) {
+                            document.getElementById("errorMessageReport").textContent = "Đã có lỗi xảy ra vui lòng thử lại"
+                        }
+                        bootstrap.Modal.getInstance(document.getElementById('reportModal')).hide();
+                    })
+                });
+    </script>
+</c:if>
+<!--End Modal report-->
+

@@ -59,48 +59,56 @@ function showEditFeed(feedId) {
     document.querySelector("#form-edit-feed input[type='file']").value = "";
     document.querySelector("#form-edit-feed button[type='submit']").removeAttribute("disabled");
 }
-document.querySelector("#form-edit-feed button[type='submit']").addEventListener("click", function (event) {
-    event.preventDefault();
-    let id = document.querySelector("#editFeedModal").getAttribute("data-feed-id");
-    let content = document.querySelector("#editFeedModal textarea").value;
-    let files = document.querySelector("#editFeedModal input[name='files']").files;
+function showReport(uid) {
+    let modelReport = document.getElementById("form-report");
+    modelReport.setAttribute("data-user-report-id", uid);
+    document.querySelector("#reportModal #content").value="";
+}
 
-    let url = "/laptrinhjava/api/update-feed";
-    
-    let body = new FormData()
-    body.append('id', id);
-    body.append('content', content);    
-    if (files && files.length) {
-        body.append('files',files);
-    }
-    
-    fetch(url, {
-        method: "post",
-        body,
-        headers: {
-            "Content-Type": "application/json"
-        }})
-            .then((response) => {
-                if (response.status !== 200) {
-                    console.error(response.message);
-                    return;
-                }
+let formUpdateFeed = document.querySelector("#form-edit-feed button[type='submit']");
+if (formUpdateFeed)
+    formUpdateFeed.addEventListener("click", function (event) {
+        event.preventDefault();
+        let id = document.querySelector("#editFeedModal").getAttribute("data-feed-id");
+        let content = document.querySelector("#editFeedModal textarea").value;
+        let files = document.querySelector("#editFeedModal input[name='files']").files;
 
-                return response.json();
-            }).then(feed => {
-        if (!feed)
-            return;
-        document.getElementById(`feed-content-${feed.id}`).textContent = feed.content;
-        if (feed.images && feed.iamge.length) {
-            let innerImage = '';
-            images.forEach((image, index) => {
-                innerImage += `<div class="carousel-item ${index == 0 ? "active" : ""}" style="height: 345px; overflow: hidden;" >
+        let url = "/laptrinhjava/api/update-feed";
+
+        let body = new FormData()
+        body.append('id', id);
+        body.append('content', content);
+        if (files && files.length) {
+            body.append('files', files);
+        }
+
+        fetch(url, {
+            method: "post",
+            body,
+            headers: {
+                "Content-Type": "application/json"
+            }})
+                .then((response) => {
+                    if (response.status !== 200) {
+                        console.error(response.message);
+                        return;
+                    }
+
+                    return response.json();
+                }).then(feed => {
+            if (!feed)
+                return;
+            document.getElementById(`feed-content-${feed.id}`).textContent = feed.content;
+            if (feed.images && feed.iamge.length) {
+                let innerImage = '';
+                images.forEach((image, index) => {
+                    innerImage += `<div class="carousel-item ${index == 0 ? "active" : ""}" style="height: 345px; overflow: hidden;" >
                                                     <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="image">
                                                 </div`
-            });
-            document.getElementById(`feed-images-${feed.id}`).innerHTML = innerImage;
-        }
-        document.querySelector("#form-edit-feed button[type='submit']").textContent = "Đã lưu";
-        document.querySelector("#form-edit-feed button[type='submit']").setAttribute("disabled", true);
+                });
+                document.getElementById(`feed-images-${feed.id}`).innerHTML = innerImage;
+            }
+            document.querySelector("#form-edit-feed button[type='submit']").textContent = "Đã lưu";
+            document.querySelector("#form-edit-feed button[type='submit']").setAttribute("disabled", true);
+        });
     });
-});

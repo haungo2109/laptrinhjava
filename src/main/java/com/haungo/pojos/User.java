@@ -80,6 +80,13 @@ public class User implements Serializable {
     @NotNull(message = "{validate.file.notNull}")
     private MultipartFile file;
 
+    public User(Integer id) {
+        this.id = id;
+    }
+
+    public User() {
+    }
+
     /**
      * @return the file
      */

@@ -5,11 +5,7 @@
 package com.haungo.pojos;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -22,7 +18,15 @@ public class TypeReport implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String type;
+    @Column(name = "type")
+    private String name;
+
+    public TypeReport() {
+    }
+
+    public TypeReport(Integer id) {
+        this.id = id;
+    }
 
     /**
      * @return the id
@@ -41,14 +45,14 @@ public class TypeReport implements Serializable {
     /**
      * @return the type
      */
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param type the type to set
+     * @param name the type to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 }

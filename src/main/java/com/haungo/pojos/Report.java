@@ -19,20 +19,27 @@ public class Report implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String content;
+
     @ManyToOne
     @JoinColumn(name = "typereport_id", referencedColumnName = "id")
     private TypeReport typeReport;
+
     @Column(name = "create_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+
+    @ManyToOne
     @JoinColumn(name = "user_report", referencedColumnName = "id")
     private User userReport;
 
+    @Transient
+    private String typeReportId;
     /**
      * @return the id
      */
@@ -115,5 +122,13 @@ public class Report implements Serializable {
      */
     public void setUserReport(User userReport) {
         this.userReport = userReport;
+    }
+
+    public String getTypeReportId() {
+        return typeReportId;
+    }
+
+    public void setTypeReportId(String typeReportId) {
+        this.typeReportId = typeReportId;
     }
 }

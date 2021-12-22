@@ -6,6 +6,7 @@ package com.haungo.controllers;
 
 import com.haungo.pojos.Auction;
 import com.haungo.pojos.Feed;
+import com.haungo.pojos.Report;
 import com.haungo.pojos.User;
 import com.haungo.service.*;
 
@@ -27,20 +28,17 @@ import org.springframework.web.bind.annotation.*;
 @ControllerAdvice
 public class HomeController {
     @Autowired private CategoryService categoryService;
-    @Autowired private PaymentService paymentService;
+    @Autowired private TypeReportService typeReportService;
     @Autowired private FeedService feedService;
     @Autowired private AuctionService auctionService;
 
     @ModelAttribute
     public void commonAttrs(Model model, HttpSession session) {
         model.addAttribute("categories", this.categoryService.getCategories());
-        model.addAttribute("payments", this.paymentService.getPayments());
     }
 
     @RequestMapping(value = {"/", "/login", "/register", "/create-auction", "/create-feed"}, method = RequestMethod.GET)
     public String index(Model model, @RequestParam Map<String, String> params, HttpSession session) {
-        //Check login send feed, auction for create, and current user
-
         List<Feed> feeds = this.feedService.getFeeds(params);
         List<Auction> auctions = this.auctionService.getAuctions(params);
 
@@ -49,6 +47,7 @@ public class HomeController {
             model.addAttribute("auction", new Auction());
             model.addAttribute("feed", new Feed());
             model.addAttribute("currentUser", currentUser);
+            model.addAttribute("typeReports", this.typeReportService.getTypeReports());
             for (Feed feed: feeds){
                 feed.checkIsLike(currentUser.getId());
             }
