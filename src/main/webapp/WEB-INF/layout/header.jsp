@@ -101,10 +101,9 @@
                 </li>
                 <c:choose>
                     <c:when test="${currentUser != null}">
+                        <li><a class="dropdown-item d-lg-none" href="<c:url value="/user/${currentUser.id}" />">Cá nhân</a></li>
                         <li><a class="dropdown-item d-lg-none" href="<c:url value="/user/${currentUser.id}#auction" />">Đấu giá của tôi</a></li>
-                        <li><a class="dropdown-item d-lg-none" href="#">Đấu giá đã thắng</a></li>
-                        <li><a class="dropdown-item d-lg-none" href="#">Bài viết của tôi</a></li>
-                        <li><a class="dropdown-item d-lg-none" href="#">Tin nhắn</a></li>
+                        <li><a class="dropdown-item d-lg-none" href="<c:url value="/auctionJoin" />">Đấu giá đã tham gia</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item d-lg-none" href="<c:url value="/logout" />"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
                         </c:when>
@@ -131,14 +130,14 @@
         <c:choose>
             <c:when test="${currentUser != null}">
                 <div class="d-none d-lg-block nav-item ms-3 h-100">
-                    <div
+                    <a href="<c:url value="/auctionJoin" />"
                         class="btn btn-sm bg-gradient-primary m-0"
                         role="button"
                         style="cursor: pointer;"
                         >
                         <i class="far fa-heart" style="font-size: 22px; color: gray"></i>
                         <p class="fs-6 fw-lighter mb-0 text-nowrap">Đang đấu giá</p> 
-                    </div>
+                    </a>
                 </div>
                 <div class="d-none d-lg-block nav-item ms-3 h-100 position-relative">
                     <div type="button" class="btn btn-link dropdown-toggle dropdown-toggle-split m-0" 
@@ -162,10 +161,8 @@
                         </p>
                     </div>
                     <ul class="dropdown-menu dropdown-menu-lg-end shadow-lg">
+                        <li><a class="dropdown-item" href="<c:url value="/user/${currentUser.id}" />">Cá nhân</a></li>
                         <li><a class="dropdown-item" href="<c:url value="/user/${currentUser.id}#auction" />">Đấu giá của tôi</a></li>
-                        <li><a class="dropdown-item" href="#">Đấu giá đã thắng</a></li>
-                        <li><a class="dropdown-item" href="#">Bài viết của tôi</a></li>
-                        <li><a class="dropdown-item" href="#">Tin nhắn</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item" href="<c:url value="/logout" />">
@@ -406,8 +403,6 @@
 <script>
     var loginModal = document.getElementById('loginModal');
     var registerModal = document.getElementById('registerModal');
-    console.log("path url is: ", window.location.pathname);
-
     if (window.location.pathname.indexOf("login") !== -1) {
         new bootstrap.Modal(loginModal, {keyboard: false}).show()
         console.log("open login modal");

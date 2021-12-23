@@ -212,11 +212,55 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <div class="y-divide"></div>
-                                                <button class="btn btn-link">
+                                                <button class="btn btn-link" onclick="showCommentFeed(${feed.id}, this)" data-userId="${currentUser.id}"> 
                                                     <i style="color: gray; font-size: 20px;" class="far fa-comment-alt me-2"></i>
                                                     ${feed.countComment} Bình luận
                                                 </button>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="comment-content d-none">
+                                        <c:if test="${currentUser != null}">
+                                            <div class="d-flex my-2 px-3">
+                                                <div class="d-flex me-2">
+                                                    <img src="${currentUser.avatar}" class="rounded-circle object-fit-cover" alt="user" width="40px" height="40px"/>
+                                                    <a class="mb-0 ms-1" href="<c:url value="/user/${currentUser.id}" />" style="white-space: nowrap;" >
+                                                        ${currentUser.firstName} ${currentUser.lastName}
+                                                    </a>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Nhập nội dung..." id="input-feed-content-${feed.id}">
+                                                    <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="sendFeedComment(${feed.id}, this)" 
+                                                            data-username="${currentUser.firstName} ${currentUser.lastName}"
+                                                            data-userId="${currentUser.id}"
+                                                            data-avatar="${currentUser.avatar}">
+                                                        <i class="fas fa-paper-plane"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <div class="textInvalidForm">
+                                            
+                                        </div>
+                                        <div id="list-comment-${feed.id}">
+                                            <c:if test="${comments != null}">
+                                                <c:forEach items="comments" var="comment">
+                                                    <div class="d-flex">
+                                                        <div class="d-flex me-2">
+                                                            <img src="${comment.user.avatar}" class="rounded-circle object-fit-cover" alt="user" width="40px" height="40px"/>
+                                                            <a class="mb-0 ms-1" href="<c:url value="/user/${comment.user.id}" />" >
+                                                                ${comment.user.firstName} ${comment.user.lastName}
+                                                            </a>
+                                                        </div>
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control" placeholder="Nhập nội dung...">
+                                                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">
+                                                                <i class="fas fa-paper-plane"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>

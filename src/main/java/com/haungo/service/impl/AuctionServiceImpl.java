@@ -61,17 +61,17 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public List<Auction> getAuctionJoin(Integer uid) {
-        return null;
+        return this.auctionRepository.getAuctionJoin(uid);
     }
 
     @Override
-    public boolean setBuyler(Integer uid, Integer auctionId) {
-        return this.auctionRepository.setBuyler(uid, auctionId);
+    public boolean setBuyler(Integer commentId, Integer auctionId) {
+        return this.auctionRepository.setBuyler(commentId, auctionId);
     }
 
     @Override
-    public boolean setFailer(Integer uid, Integer auctionId) {
-        return this.auctionRepository.setFailer(uid, auctionId);
+    public boolean setFailer(Integer commentId, Integer auctionId) {
+        return this.auctionRepository.setFailer(commentId, auctionId);
     }
 
     @Override

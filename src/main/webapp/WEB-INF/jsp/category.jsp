@@ -21,7 +21,9 @@
                         <li class="breadcrumb-item">
                             <a href="${goHome}">KanJ</a>
                         </li>
-                        <li class="breadcrumb-item">Đấu giá</li>
+                        <li class="breadcrumb-item">
+                            <a href="<c:url value="/category"/>">Đấu giá</a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             ${typeCategory}
                         </li>
@@ -132,7 +134,6 @@
                 <div class="filter-rs d-flex justify-content-between">
                     <div class="left d-flex align-items-center">
                         <h5 class="d-none d-sm-block m-0 one-line me-1">
-                            50 kết quả
                         </h5>
                         <div class="input-group">
                             <input
@@ -145,6 +146,7 @@
                             <button
                                 class="btn btn-outline-secondary"
                                 type="button"
+                                onclick="searchKw()"
                                 >
                                 <i class="fas fa-search"></i>
                             </button>
@@ -155,17 +157,19 @@
                         <select
                             class="form-select"
                             aria-label="Default select example"
-                            id="filter"
+                            id="sort-auction"
+                            onchange="sortAuction()"
                             >
-                            <option selected>Phù hợp nhất</option>
-                            <option value="1">Mới nhất</option>
-                            <option value="2">Ưa thích nhiều</option>
+                            <option selected value="createAt">Mới nhất</option>
+                            <option value="countComment">Nổi bật nhất</option>
                         </select>
                     </div>
                 </div>
-
+                <script>
+                    let params = getQueryParams();
+                    if (params.sort) document.getElementById("sort-auction").value = params.sort;
+                </script>
                 <!--End Tool filter-->
-
 
                 <div
                     class="d-flex flex-wrap justify-content-evenly list-product"
@@ -208,9 +212,7 @@
                                         "
                                         >
                                         <p class="mb-0">
-                                            <span style="color: #dc3545"
-                                                  >10 Hrs Left</span
-                                            >
+                                            <span style="color: #dc3545" class="time-left">${auction.deadline}</span>
                                         </p>
                                         <a class="mb-0" href="<c:url value="/user/${auction.user.id}" />">
                                             ${auction.user.firstName} ${auction.user.lastName}
@@ -225,9 +227,9 @@
                                             font-weight-bold
                                             "
                                             >
-                                            ${auction.basePrice}
+                                            ${auction.currentPrice}
                                         </h4>
-                                        <small class="text-capitalize">(${auction.countComment} bids)</small>
+                                        <small>(${auction.countComment} định giá)</small>
                                     </div>
                                     <a
                                         href="<c:url value="/auction/${auction.id}" />"

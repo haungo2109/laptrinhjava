@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -35,20 +32,20 @@ public class AuctionRepositoryImpl implements AuctionRepository {
         query = query.select(root);
 
         String kw = params.getOrDefault("kw", null);
-        String category = params.getOrDefault("category", null);
-        String minPrice = params.getOrDefault("minPrice", null);
+        String categoryId = params.getOrDefault("id", null);
+        String sort = params.getOrDefault("sort", "createAt");
         int page = Integer.parseInt(params.getOrDefault("page", "1"));
 
         if (kw != null) {
             Predicate p = builder.like(root.get("title").as(String.class), String.format("%%%s%%", kw));
             query = query.where(p);
         }
-        if (category != null) {
-            Predicate p = builder.like(root.get("category").as(String.class), String.format("%s", category));
+        if (categoryId != null) {
+            Predicate p = builder.equal(root.get("category").get("id").as(Integer.class), Integer.parseInt(categoryId));
             query = query.where(p);
         }
 
-        query = query.orderBy(builder.desc(root.get("createAt")));
+        query = query.orderBy(builder.desc(root.get(sort)));
 
         Query q = session.createQuery(query);
 
@@ -63,7 +60,14 @@ public class AuctionRepositoryImpl implements AuctionRepository {
     @Transactional
     public Auction getAuctionById(Integer id) {
         Session session = sessionFactory.getObject().getCurrentSession();
-        return session.get(Auction.class, id);
+        Auction auction = session.get(Auction.class, id);
+        if (auction != null && auction.getDeadline().before(new Date()) && auction.getStatusAuction().equals(StatusAuction.being.toString())){
+            Query q = session.createQuery("UPDATE Auction A Set A.statusAuction=:status WHERE A.id=:id");
+            q.setParameter("status", StatusAuction.fail.toString());
+            q.setParameter("id", id);
+            q.executeUpdate();
+        }
+        return auction;
     }
 
     @Override
@@ -78,11 +82,8 @@ public class AuctionRepositoryImpl implements AuctionRepository {
         auction.setActive(true);
         auction.setCurrentPrice(auction.getBasePrice());
         auction.setStatusAuction(StatusAuction.being.toString());
+        auction.setCategory(new Category(Integer.parseInt(auction.getCategoryId())));
         Session session = this.sessionFactory.getObject().getCurrentSession();
-
-        Category category = session.get(Category.class, Integer.parseInt(auction.getCategoryId()));
-        if (category == null) return null;
-        auction.setCategory(category);
 
         try {
             session.save(auction);
@@ -114,33 +115,41 @@ public class AuctionRepositoryImpl implements AuctionRepository {
     @Override
     @Transactional
     public List<Auction> getAuctionJoin(Integer uid) {
-        return null;
+        Session session = this.sessionFactory.getObject().getCurrentSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Auction> query = builder.createQuery(Auction.class);
+
+        Root root = query.from(Auction.class);
+
+        Subquery<AuctionComment> subquery = query.subquery(AuctionComment.class);
+        Root<AuctionComment> subRootEntity = subquery.from(AuctionComment.class);
+
+        Predicate predicate = builder.equal(subRootEntity.get("user").get("id").as(Integer.class), uid);
+        Predicate predicate1 = builder.equal(root.get("id"), subRootEntity.get("auction").get("id"));
+
+        subquery.select(subRootEntity).where(predicate, predicate1);
+        query = query.select(root).where(builder.exists(subquery));
+
+        List<Auction> auctions = session.createQuery(query).getResultList();
+        return auctions;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public boolean setBuyler(Integer uid, Integer auctionId) {
+    public boolean setBuyler(Integer commentId, Integer auctionId) {
         Session session = sessionFactory.getObject().getCurrentSession();
 
         try {
-            Auction auction = session.get(Auction.class, auctionId);
-            User user = session.get(User.class, uid);
-//            Query q = session.createQuery("FROM AuctionComment A WHERE A.auction.id =:id and A.user.id =:uid ");
-//            q.setParameter("id", auctionId);
-//            q.setParameter("uid", uid);
-//
-//            AuctionComment auctionComment = (AuctionComment) q.getResultList().get(0);
+            Query auctionCommentQuery = session.createQuery("UPDATE AuctionComment A SET A.statusTransaction=:status WHERE A.id =:id ");
+            Query auctionQuery = session.createQuery("UPDATE Auction A SET A.statusAuction=:status WHERE A.id=:id");
 
-            if (auction == null || user == null) return false;
-            auction.setBuyler(user);
-            auction.setStatusAuction(StatusAuction.inprocess.toString());
-            auction.getComments();
-            AuctionComment auctionComment = auction.getCommentByUserId(uid);
-            auctionComment.setStatusTransaction(StatusTransaction.inprocess.toString());
+            auctionCommentQuery.setParameter("status", StatusAuction.inprocess.toString());
+            auctionCommentQuery.setParameter("id", commentId);
+            auctionQuery.setParameter("status", StatusTransaction.inprocess.toString());
+            auctionQuery.setParameter("id", auctionId);
 
-            session.update(auction);
-            session.saveOrUpdate(auctionComment);
-            return true;
+            if (auctionQuery.executeUpdate() == 1 && auctionCommentQuery.executeUpdate() == 1)
+                return true;
         } catch (HibernateException ex) {
             System.err.println(ex.getMessage());
         }
@@ -149,7 +158,7 @@ public class AuctionRepositoryImpl implements AuctionRepository {
 
     @Override
     @Transactional
-    public boolean setFailer(Integer uid, Integer auctionId) {
+    public boolean setFailer(Integer commentId, Integer auctionId) {
         return false;
     }
 

@@ -34,6 +34,7 @@ public class Auction implements Serializable {
 
     @Column(name = "base_price")
     private Double basePrice;
+    @Column(name = "condition_content")
     private String condition;
     private Date deadline;
 

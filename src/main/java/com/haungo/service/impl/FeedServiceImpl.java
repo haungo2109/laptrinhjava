@@ -110,14 +110,4 @@ public class FeedServiceImpl implements FeedService {
     public boolean removeLike(Integer id, Integer uid) {
         return this.feedRepository.removeLike(id, uid);
     }
-
-    @Override
-    public FeedComment addComment(Integer id, Integer uid, FeedComment feedComment) {
-        return this.feedRepository.addComment(id, uid, feedComment);
-    }
-
-    @Override
-    public boolean removeComment(Integer id) {
-        return this.feedRepository.removeComment(id);
-    }
 }

@@ -45,37 +45,48 @@ public class User implements Serializable {
     @NotBlank(message = "{validate.lastName.notBlank}")
     private String lastName;
 
+    @JsonIgnore
     @NotNull
     @Email(message = "{validate.email}")
     private String email;
 
-    @JsonIgnore
     @Column(name = "is_active")
-    private boolean isActive = true;
+    @JsonIgnore
+    private boolean active = true;
 
     @Column(unique = true)
     @NotNull
+    @JsonIgnore
     @Pattern(regexp = "[0-9]{10}", message = "{validate.phone}")
     private String phone;
     private String avatar;
+    @JsonIgnore
     private String address;
 
+    @JsonIgnore
     @Temporal(TemporalType.DATE)
     @Past
     private Date birthday;
+    @JsonIgnore
     private Integer rating;
 
+    @JsonIgnore
     @Column(name = "user_role")
     private String userRole;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Feed> feeds;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Auction> auctions;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "likes")
     private Set<Feed> feedlikes;
+
+    @JsonIgnore
     @Transient
     @NotNull(message = "{validate.file.notNull}")
     private MultipartFile file;
@@ -188,15 +199,15 @@ public class User implements Serializable {
     /**
      * @return the active
      */
-    public boolean isActive() {
-        return isActive;
+    public boolean getActive() {
+        return active;
     }
 
     /**
      * @param active the active to set
      */
     public void setActive(boolean active) {
-        this.isActive = active;
+        this.active = active;
     }
 
     /**

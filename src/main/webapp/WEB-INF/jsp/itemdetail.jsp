@@ -18,7 +18,9 @@
                 <nav aria-label="breadcrumb" class="my-lg-4 my-2">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="<c:url value="/"/>">KanJ</a></li>
-                        <li class="breadcrumb-item">Đấu giá</li>
+                        <li class="breadcrumb-item">
+                            <a href="<c:url value="/category"/>">Đấu giá</a></li>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             ${auction.title}
                         </li>
@@ -103,6 +105,7 @@
                         </h3>
                         <div class="d-flex justify-content-between">
                             <p class="mb-1">Giá ban đầu ${auction.basePrice}</p>
+
                             <p class="mb-1 text-danger time-left">${auction.deadline}</p>
                         </div>
                         <div class="p-4" style="background-color: #fbf6f4">
@@ -122,7 +125,7 @@
                                 </p>
                             </div>
                             <c:choose>
-                                <c:when test="${comments != null && comments.size() != 0 && currentUser != null && currentUser.id == auction.user.id}">
+                                <c:when test="${currentUser != null && comments != null && comments.size() != 0 && currentUser.id == auction.user.id}">
                                     <div>
                                         <ul class="list-group">
                                             <c:forEach items="${comments}" var="comment">
@@ -135,14 +138,21 @@
                                                             </a>
                                                         </div>
                                                         <p class="mb-0">${comment.price}</p>
-                                                        <button class="btn btn-success">Chọn thắng đấu giá</button>
+                                                        <c:choose>
+                                                            <c:when test="${auction.statusAuction == 'being'}">
+                                                                <button class="btn btn-success btnSetWinner" onclick="setWinner(this)" data-commentId="${comment.id}" data-auctionId="${auction.id}" >Chọn thắng đấu giá</button>
+                                                            </c:when>
+                                                            <c:when test="${auction.statusAuction == 'inprocess' && comment.statusTransaction == 'inprocess'}">
+                                                                <button class="btn btn-link">Đang thanh toán</button>
+                                                            </c:when>
+                                                        </c:choose>
                                                     </div>
                                                 </li>
                                             </c:forEach>
                                         </ul>
                                     </div>
                                 </c:when>
-                                <c:when test="${comments != null && currentUser != null && currentUser.id == auction.user.id}">
+                                <c:when test="${currentUser != null && comments != null && currentUser.id == auction.user.id}">
                                     <div>
                                         <h3 class="fs-4">Chưa có người tham gia</h3>
                                     </div>
@@ -150,21 +160,23 @@
                                 <c:otherwise>
                                     <c:url value='/add-auction-comment/${auction.id}' var="actionAddAuctionComment" />
                                     <form:form action="${actionAddAuctionComment}" method="post" modelAttribute="auctionComment">
-                                        <div class="my-3">
-                                            <c:if test="${messageErrorCreateAuctionComment != null}">
-                                                <div class="textInvalidForm">${messageErrorCreateAuctionComment}</div>
-                                            </c:if>
-                                            <label for="bid">Chọn giá bạn muốn</label>
-                                            <form:select
-                                                path="price"
-                                                class="form-select form-select-lg"
-                                                aria-label="Chọn giá muốn đấu giá"
-                                                >
-                                                <c:forEach begin="1" end="7" step="1" varStatus="loop">
-                                                    <form:option value="${loop.count * 50000 + auction.currentPrice}">${loop.count * 50000 + auction.currentPrice}</form:option>
-                                                </c:forEach>
-                                            </form:select>
-                                        </div>
+                                        <c:if test="${auction.statusAuction == 'being'}">
+                                            <div class="my-3">
+                                                <c:if test="${messageErrorCreateAuctionComment != null}">
+                                                    <div class="textInvalidForm">${messageErrorCreateAuctionComment}</div>
+                                                </c:if>
+                                                <label for="bid">Chọn giá bạn muốn</label>
+                                                <form:select
+                                                    path="price"
+                                                    class="form-select form-select-lg"
+                                                    aria-label="Chọn giá muốn đấu giá"
+                                                    >
+                                                    <c:forEach begin="1" end="7" step="1" varStatus="loop">
+                                                        <form:option value="${loop.count * 50000 + auction.currentPrice}">${loop.count * 50000 + auction.currentPrice}</form:option>
+                                                    </c:forEach>
+                                                </form:select>
+                                            </div>
+                                        </c:if>
                                         <c:choose>
                                             <c:when test="${currentUser != null && comments[0].price == auction.currentPrice}">
                                                 <button
@@ -214,7 +226,7 @@
                                                     "
                                                     disabled
                                                     >
-                                                    Bạn cần đăng nhập
+                                                    ${auction.statusAuction == "being" ? "Bạn cần đăng nhập" : "Đấu giá đã kết thúc"}
                                                 </button>
                                             </c:otherwise>
                                         </c:choose>

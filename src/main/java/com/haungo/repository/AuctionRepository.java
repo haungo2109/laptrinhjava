@@ -20,7 +20,7 @@ public interface AuctionRepository {
     Auction addAuction(Auction auction);
     List<Auction> getMyAuction(Integer uid);
     List<Auction> getAuctionJoin(Integer uid);
-    boolean setBuyler(Integer uid, Integer auctionId);
-    boolean setFailer(Integer uid, Integer auctionId);
+    boolean setBuyler(Integer commentId, Integer auctionId);
+    boolean setFailer(Integer commentId, Integer auctionId);
     boolean cancelAuction(Integer auctionId);
 }

@@ -15,219 +15,42 @@
         <div class="col-12 col-lg-10">
             <session>
                 <div class="d-flex my-sm-4 mt-3 mb-2 align-items-center">
-                    <h3 class="me-3 m-0">Danh sách yêu thích</h3>
-                </div>
-                <div class="flex-column p-0" style="display: inherit;">
-                    <div class="position-lg-sticky w-100 px-sm-4 pb-sm-2 filter-favorites" style="background-color: #ffffff; z-index: 1080;">
-                        <div class="filter-rs d-flex justify-content-between">
-                            <div class="left d-flex align-items-center">
-                                <h5 class="d-none d-sm-block m-0 one-line me-1">50 kết quả </h5>
-                                <div class="input-group">
-                                    <input type="text" id="filter-kw" class="form-control" placeholder="Nhập từ khóa" aria-label="Nhập từ khóa cần lọc">
-                                    <button class="btn btn-outline-secondary" type="button">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="right d-flex align-items-center">
-                                <h5 class="d-none d-sm-block m-0 one-line me-1">Lọc</h5>
-                                <select class="form-select" aria-label="Default select example" id="filter">
-                                    <option selected>Phù hợp nhất</option>
-                                    <option value="1">Mới nhất</option>
-                                    <option value="2">Ưa thích nhiều</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 class="me-3 m-0">Đấu giá đang tham gia</h3>
                 </div>
 
                 <div class="d-flex flex-wrap justify-content-evenly list-product">
-                    <div class="card position-relative border-0 m-2">
-                        <img 
-                            src="public/assets/img/item/item-1.jpg" 
-                            class="card-img-top object-fit-cover"
-                            >
-                        <button 
-                            class="btn btn-light position-absolute top-0 end-0 rounded-circle p-1 mt-1 me-1"
-                            style="width: 30px; height: 30px;"
-                            type="button" 
-                            >
-                            <i class="fas fa-heart" style="color: #dc3545; font-size: 20px;"></i>
-                        </button>
-
-                        <div class="card-body p-0">
-                            <div class="top-info-item d-flex justify-content-between">
-                                <p class="mb-0">
-                                    <span style="color: #dc3545;">10 Hrs Left</span>
-                                </p>
-                                <a class="mb-0"  href="#store">
-                                    Hill Auction Gallery
-                                </a>
-                            </div>
-                            <div class="my-0 my-sm-1 my-md-2">
-                                <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">150đ</h4>
-                                <small class="text-capitalize">(6 bids)</small>
-                            </div>
-                            <a href="javascript:;" class="text-dark fs-5 fs-md-4 d-block">
-                                Wholesale Louis Chanel Hermes Gucci & More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card position-relative border-0 m-2">
-                        <img 
-                            src="public/assets/img/item/item-1.jpg" 
-                            class="card-img-top object-fit-cover"
-                            >
-                        <button 
-                            class="btn btn-light position-absolute top-0 end-0 rounded-circle p-1 mt-1 me-1"
-                            style="width: 30px; height: 30px;"
-                            type="button" 
-                            >
-                            <i class="fas fa-heart" style="color: #dc3545; font-size: 20px;"></i>
-                        </button>
-
-                        <div class="card-body p-0">
-                            <div class="top-info-item d-flex justify-content-between">
-                                <p class="card-text mb-0">
-                                    <span style="color: #dc3545;">10 Hrs Left</span>
-                                </p>
-                                <a class="mb-0"  href="#go-to-store">
-                                    Hill Auction Gallery
-                                </a>
-                            </div>
-                            <div class="my-0 my-sm-1 my-md-2">
-                                <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">150đ</h4>
-                                <small class="text-capitalize">(6 bids)</small>
-                            </div>
-                            <a href="javascript:;" class="text-dark fs-5 fs-md-4 d-block">
-                                Wholesale Louis Chanel Hermes Gucci & More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card position-relative border-0 m-2">
-                        <img 
-                            src="public/assets/img/item/item-1.jpg" 
-                            class="card-img-top object-fit-cover"
-                            >
-                        <button 
-                            class="btn btn-light position-absolute top-0 end-0 rounded-circle p-1 mt-1 me-1"
-                            style="width: 30px; height: 30px;"
-                            type="button" 
-                            >
-                            <i class="fas fa-heart" style="color: #dc3545; font-size: 20px;"></i>
-                        </button>
-
-                        <div class="card-body p-0">
-                            <div class="top-info-item d-flex justify-content-between">
-                                <p class="card-text mb-0">
-                                    <span style="color: #dc3545;">10 Hrs Left</span>
-                                </p>
-                                <a class="mb-0"  href="#go-to-store">
-                                    Hill Auction Gallery
-                                </a>
-                            </div>
-                            <div class="my-0 my-sm-1 my-md-2">
-                                <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">150đ</h4>
-                                <small class="text-capitalize">(6 bids)</small>
-                            </div>
-                            <a href="javascript:;" class="text-dark fs-5 fs-md-4 d-block">
-                                Wholesale Louis Chanel Hermes Gucci & More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card position-relative border-0 m-2">
-                        <img 
-                            src="public/assets/img/item/item-1.jpg" 
-                            class="card-img-top object-fit-cover"
-                            >
-                        <button 
-                            class="btn btn-light position-absolute top-0 end-0 rounded-circle p-1 mt-1 me-1"
-                            style="width: 30px; height: 30px;"
-                            type="button" 
-                            >
-                            <i class="fas fa-heart" style="color: #dc3545; font-size: 20px;"></i>
-                        </button>
-
-                        <div class="card-body p-0">
-                            <div class="top-info-item d-flex justify-content-between">
-                                <p class="card-text mb-0">
-                                    <span style="color: #dc3545;">10 Hrs Left</span>
-                                </p>
-                                <a class="mb-0"  href="#go-to-store">
-                                    Hill Auction Gallery
-                                </a>
-                            </div>
-                            <div class="my-0 my-sm-1 my-md-2">
-                                <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">150đ</h4>
-                                <small class="text-capitalize">(6 bids)</small>
-                            </div>
-                            <a href="javascript:;" class="text-dark fs-5 fs-md-4 d-block">
-                                Wholesale Louis Chanel Hermes Gucci & More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card position-relative border-0 m-2">
-                        <img 
-                            src="public/assets/img/item/item-1.jpg" 
-                            class="card-img-top object-fit-cover"
-                            >
-                        <button 
-                            class="btn btn-light position-absolute top-0 end-0 rounded-circle p-1 mt-1 me-1"
-                            style="width: 30px; height: 30px;"
-                            type="button" 
-                            >
-                            <i class="fas fa-heart" style="color: #dc3545; font-size: 20px;"></i>
-                        </button>
-
-                        <div class="card-body p-0">
-                            <div class="top-info-item d-flex justify-content-between">
-                                <p class="card-text mb-0">
-                                    <span style="color: #dc3545;">10 Hrs Left</span>
-                                </p>
-                                <a class="mb-0"  href="#go-to-store">
-                                    Hill Auction Gallery
-                                </a>
-                            </div>
-                            <div class="my-0 my-sm-1 my-md-2">
-                                <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">150đ</h4>
-                                <small class="text-capitalize">(6 bids)</small>
-                            </div>
-                            <a href="javascript:;" class="text-dark fs-5 fs-md-4 d-block">
-                                Wholesale Louis Chanel Hermes Gucci & More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card position-relative border-0 m-2">
-                        <img 
-                            src="public/assets/img/item/item-1.jpg" 
-                            class="card-img-top object-fit-cover"
-                            >
-                        <button 
-                            class="btn btn-light position-absolute top-0 end-0 rounded-circle p-1 mt-1 me-1"
-                            style="width: 30px; height: 30px;"
-                            type="button" 
-                            >
-                            <i class="fas fa-heart" style="color: #dc3545; font-size: 20px;"></i>
-                        </button>
-
-                        <div class="card-body p-0">
-                            <div class="top-info-item d-flex justify-content-between">
-                                <p class="card-text mb-0">
-                                    <span style="color: #dc3545;">10 Hrs Left</span>
-                                </p>
-                                <a class="mb-0"  href="#go-to-store">
-                                    Hill Auction Gallery
-                                </a>
-                            </div>
-                            <div class="my-0 my-sm-1 my-md-2">
-                                <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">150đ</h4>
-                                <small class="text-capitalize">(6 bids)</small>
-                            </div>
-                            <a href="javascript:;" class="text-dark fs-5 fs-md-4 d-block">
-                                Wholesale Louis Chanel Hermes Gucci & More
-                            </a>
-                        </div>
-                    </div>
+                    <c:choose>
+                        <c:when test="${auctions != null && auctions.size() > 0}">
+                            <c:forEach items="${auctions}" var="auction">
+                                <div class="card position-relative border-0 m-2">
+                                    <img 
+                                        src="${auction.images.iterator().next().image}" 
+                                        class="card-img-top object-fit-cover"
+                                        >
+                                    <div class="card-body p-0">
+                                        <div class="top-info-item d-flex justify-content-between">
+                                            <p class="mb-0">
+                                                <span style="color: #dc3545;" class="time-left">${auction.deadline}</span>
+                                            </p>
+                                            <a class="mb-0"  href="<c:url value="/user/${auction.user.id}" />">
+                                                ${auction.user.firstName} ${auction.user.lastName}
+                                            </a>
+                                        </div>
+                                        <div class="my-0 my-sm-1 my-md-2">
+                                            <h4 class="m-0 d-inline-block text-uppercase text-xs font-weight-bold">${auction.currentPrice}</h4>
+                                            <small class="text-capitalize">(${auction.countComment} định giá)</small>
+                                        </div>
+                                            <a href="<c:url value="/auction/${auction.id}" />" class="text-dark fs-5 fs-md-4 d-block">
+                                            ${auction.title}
+                                        </a>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <h3>${currentUser != null ? "Không có đấu giá nào hết" : "Vui lòng đăng nhập"}</h3>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </session>
         </div>

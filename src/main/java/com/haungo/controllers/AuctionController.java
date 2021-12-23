@@ -54,15 +54,34 @@ public class AuctionController {
 
     @RequestMapping(value = {"/category"}, method = RequestMethod.GET)
     public String index(Model model, @RequestParam Map<String, String> params, HttpSession session) {
-        String type = params.getOrDefault("category", "Tất cả");
         List<Auction> auctions = this.auctionService.getAuctions(params);
         List<Category> categories = this.categoryService.getCategories();
 
-        model.addAttribute("typeCategory", type);
+        String type = params.getOrDefault("id", null);
+        if (type == null){
+            model.addAttribute("typeCategory", "Tất cả");
+        } else {
+            for (Category category: categories){
+                if (category.getId().equals(Integer.parseInt(type))) {
+                    model.addAttribute("typeCategory", category.getName());
+                    break;
+                }
+            }
+        }
+
         model.addAttribute("auctions", auctions);
         model.addAttribute("categories", categories);
 
         return "category";
+    }
+
+    @RequestMapping(value = {"/auctionJoin"}, method = RequestMethod.GET)
+    public String auctionJoin(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("currentUser");
+        if (user == null) return "auctionJoin";
+        List<Auction> auctions = this.auctionService.getAuctionJoin(user.getId());
+        model.addAttribute("auctions", auctions);
+        return "auctionJoin";
     }
 
     @RequestMapping(value = {"/auction/{id}"}, method = RequestMethod.GET)
@@ -105,7 +124,6 @@ public class AuctionController {
         if (result.hasErrors()){
             return "index";
         }
-
         try {
             Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(auction.getDate());
             auction.setDeadline(date1);

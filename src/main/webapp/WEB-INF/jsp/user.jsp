@@ -274,8 +274,8 @@
                                                >Started ${auction.createAt}</small
                                         >
                                         <p class="mb-0 my-md-3">
-                                            <span style="color: #dc3545"
-                                                  >10 Hrs Left</span
+                                            <span style="color: #dc3545" class="time-left"
+                                                  >${auction.deadline}</span
                                             >
                                         </p>
                                     </div>

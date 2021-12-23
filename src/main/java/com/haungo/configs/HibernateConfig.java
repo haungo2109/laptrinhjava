@@ -56,6 +56,7 @@ public class HibernateConfig {
         Properties props = new Properties();
         props.put(AvailableSettings.DIALECT, env.getProperty("hibernate.dialect"));
         props.put(AvailableSettings.SHOW_SQL, env.getProperty("hibernate.showSql"));
+        props.put(AvailableSettings.FORMAT_SQL, true);
         return props;
     }
 }

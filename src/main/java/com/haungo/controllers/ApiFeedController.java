@@ -28,6 +28,12 @@ public class ApiFeedController {
     @Autowired private FeedService feedService;
     @Autowired private FeedCommentService feedCommentService;
 
+    @GetMapping(value = "/api/comment/{feedId}")
+    public ResponseEntity<List<FeedComment>> getComment(@PathVariable Integer feedId){
+        List<FeedComment> feedComments = this.feedCommentService.getFeedCommentByFeedId(feedId);
+        return new ResponseEntity<>(feedComments, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/api/like-feed", produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpStatus likeFeed(@RequestBody Map<String, String> params, HttpSession session) {
         Integer id = Integer.parseInt(params.getOrDefault("feedId", null));
@@ -48,9 +54,16 @@ public class ApiFeedController {
             return HttpStatus.BAD_REQUEST;
     }
 
-    @PostMapping(value = "/add-comment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FeedComment> createFeedComment(@RequestBody Map params, HttpSession session) {
-        return null;
+    @PostMapping(value = "/api/add-comment/{feedId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FeedComment> createFeedComment(@RequestBody FeedComment feedComment, @PathVariable Integer feedId, HttpSession session) {
+        User user = (User) session.getAttribute("currentUser");
+        feedComment.setFeed(new Feed(feedId));
+        feedComment.setUser(user);
+        FeedComment feedComment1 = this.feedCommentService.addFeedComment(feedComment);
+        if (feedComment1 == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<FeedComment>(feedComment1, HttpStatus.OK);
     }
 
     @PostMapping(value = "/api/update-feed", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -60,15 +73,11 @@ public class ApiFeedController {
         return new ResponseEntity<>(rs, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/remove-comment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpStatus deleteFeedComment(@RequestBody Map<String, String> params, HttpSession session) {
-        Integer id = Integer.parseInt(params.getOrDefault("commentId", null));
+    @DeleteMapping(value = "/api/remove-comment/{commentId}")
+    public HttpStatus deleteFeedComment(@PathVariable Integer commentId, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
 
-        //check resource owner
-        if (this.feedCommentService.getFeedCommentById(id).getUser().getId() != user.getId()) return HttpStatus.BAD_REQUEST;
-
-        if (id != null && this.feedService.removeComment(id))
+        if (this.feedCommentService.removeComment(commentId))
             return HttpStatus.OK;
         else
             return HttpStatus.BAD_REQUEST;
@@ -86,5 +95,4 @@ public class ApiFeedController {
         else
             return HttpStatus.BAD_REQUEST;
     }
-
 }

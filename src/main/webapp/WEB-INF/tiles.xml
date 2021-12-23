@@ -11,7 +11,6 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         
         <put-attribute name="content" value="base" />
         
-        <put-list-attribute name="javascripts"></put-list-attribute>
         <put-list-attribute name="stylesheets"></put-list-attribute>
     
     </definition>
@@ -22,10 +21,6 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/style.css" />
-        </put-list-attribute>
-        
-        <put-list-attribute name="javascripts">
-            <add-attribute value="/js/main.js" />
         </put-list-attribute>
     </definition>
     
@@ -53,6 +48,15 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/user.css" />
+        </put-list-attribute>
+    </definition>
+    
+    <definition name="auctionJoin" extends="baseLayout">
+        <put-attribute name="title" value="KanJ - Các đấu giá đang tham gia" />
+        <put-attribute name="content" value="/WEB-INF/jsp/favorites.jsp" />
+        
+        <put-list-attribute name="stylesheets">
+            <add-attribute value="/css/favorites.css" />
         </put-list-attribute>
     </definition>
 </tiles-definitions>

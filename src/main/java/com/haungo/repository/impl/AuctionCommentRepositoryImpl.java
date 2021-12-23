@@ -63,7 +63,7 @@ public class AuctionCommentRepositoryImpl implements AuctionCommentRepository {
     @Override
     public List<AuctionComment> getCommentByAuctionId(Integer id) {
         Session session = sessionFactory.getObject().getCurrentSession();
-        Query q = session.createQuery("FROM AuctionComment A WHERE A.auction.id =:id");
+        Query q = session.createQuery("FROM AuctionComment A WHERE A.auction.id =:id ORDER BY A.createAt DESC");
         q.setParameter("id", id);
         List<AuctionComment> auctionComments = q.getResultList();
 

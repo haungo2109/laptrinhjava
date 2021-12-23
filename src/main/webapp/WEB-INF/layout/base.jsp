@@ -8,7 +8,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
-<tiles:importAttribute name="javascripts"/>
 <tiles:importAttribute name="stylesheets"/>
 
 <!DOCTYPE html>
@@ -56,11 +55,7 @@
         <tiles:insertAttribute name="header" />
         <tiles:insertAttribute name="content" />
         <tiles:insertAttribute name="footer" />
-        <c:if test="${javascripts != null}">
-            <c:forEach var="script" items="${javascripts}">
-                <script src="<c:url value="${script}"/>"></script>
-            </c:forEach>
-        </c:if>
+        <<script src="<c:url value="/js/main.js" />"></script>
         <script>
             let items = document.getElementsByClassName("time-feed");
             for (const c of items) {

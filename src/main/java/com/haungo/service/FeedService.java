@@ -14,6 +14,4 @@ public interface FeedService {
     boolean removeFeed(Integer id);
     boolean addLike(Integer id, Integer uid);
     boolean removeLike(Integer id, Integer uid);
-    FeedComment addComment(Integer id, Integer uid, FeedComment feedComment);
-    boolean removeComment(Integer id);
 }

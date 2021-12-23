@@ -162,37 +162,4 @@ public class FeedRepositoryimpl implements FeedRepository {
         }
         return false;
     }
-
-    @Override
-    @Transactional
-    public FeedComment addComment(Integer id, Integer uid, FeedComment feedComment) {
-        Session session = sessionFactory.getObject().getCurrentSession();
-        try {
-            Feed feed = session.get(Feed.class, id);
-            if (feed != null){
-                feed.getComments().add(feedComment);
-                session.save(feed);
-                return feedComment;
-            }
-        } catch (HibernateException ex) {
-            System.err.println(ex.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public boolean removeComment(Integer id) {
-        Session session = sessionFactory.getObject().getCurrentSession();
-        try {
-            FeedComment feedComment = session.get(FeedComment.class, id);
-            if (feedComment != null){
-                session.delete(feedComment);
-                return true;
-            }
-        } catch (HibernateException ex) {
-            System.err.println(ex.getMessage());
-        }
-        return false;
-    }
 }

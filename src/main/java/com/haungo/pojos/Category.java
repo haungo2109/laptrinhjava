@@ -33,6 +33,13 @@ public class Category implements Serializable{
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Collection<Auction> auctions;
 
+    public Category(Integer id) {
+        this.id = id;
+    }
+
+    public Category() {
+    }
+
     /**
      * @return the id
      */

@@ -73,6 +73,13 @@ public class Feed implements Serializable {
     @Transient
     private List<MultipartFile> files;
 
+    public Feed() {
+    }
+
+    public Feed(Integer id) {
+        this.id = id;
+    }
+
     public void checkIsLike(Integer uid){
         if (this.likes != null && !this.likes.isEmpty()) {
             for (User u: this.likes){
