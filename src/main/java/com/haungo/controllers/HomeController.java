@@ -31,6 +31,7 @@ public class HomeController {
     @Autowired private TypeReportService typeReportService;
     @Autowired private FeedService feedService;
     @Autowired private AuctionService auctionService;
+    @Autowired private NotificationService notificationService;
 
     @ModelAttribute
     public void commonAttrs(Model model, HttpSession session) {
@@ -48,11 +49,11 @@ public class HomeController {
             model.addAttribute("feed", new Feed());
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("typeReports", this.typeReportService.getTypeReports());
+            model.addAttribute("notifications", this.notificationService.getNotificationByUid(currentUser.getId()));
             for (Feed feed: feeds){
                 feed.checkIsLike(currentUser.getId());
             }
         } else if (model.getAttribute("user") == null) {
-            //If not login send user to form login and register
             model.addAttribute("user", new User());
         }
         model.addAttribute("feeds", feeds);

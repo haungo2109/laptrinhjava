@@ -78,25 +78,6 @@
                                 src="${auction.images.iterator().next().image}" 
                                 alt="main-image"
                                 />
-                            <button
-                                class="
-                                btn btn-light
-                                position-absolute
-                                top-0
-                                end-0
-                                rounded-circle
-                                p-1
-                                mt-2
-                                me-2
-                                "
-                                style="width: 30px; height: 30px"
-                                type="button"
-                                >
-                                <i
-                                    class="fas fa-heart"
-                                    style="color: #dc3545; font-size: 20px"
-                                    ></i>
-                            </button>
                         </div>
                     </div>
                     <div class="col-md-6 col-12">
@@ -207,9 +188,10 @@
                                                     fs-5
                                                     text-uppercase
                                                     "
+                                                    style="${auction.statusAuction == "being" ? '' : 'pointer-events: none;'}"
                                                     type="submit"
                                                     >
-                                                    Đấu giá
+                                                    ${auction.statusAuction == "being" ? "Đấu giá" : "Đấu giá đã kết thúc"}
                                                 </button>
                                             </c:when>
                                             <c:otherwise>
@@ -234,6 +216,29 @@
                                 </c:otherwise>
                             </c:choose>
                         </div>
+                        <c:if test="${currentUser != null && auction.buyler.id == currentUser.id}">
+                            <c:choose>
+                                <c:when test="${auction.statusAuction == 'success'}">
+                                    <h3 class="fs-4 " href="#" style="background-color: #04be04; color: white" >Đã thanh toán</h3>
+                                </c:when>
+                                <c:when test="${auction.statusAuction == 'inprocess'}">
+                                    <p>Hình thức thanh toán:</p>
+                                    <div class="mb-1">
+                                        <label><input type="radio" name="iCheck" onchange="getLinkPayment(${auction.id})" class="iradio_flat-blue"> Ví 
+                                            <img src="<c:url value="/img/logo/logo-zalopay.svg" />" alt="logozalopage">
+                                        </label>
+                                    </div>
+                                        <a class="btn w-50" target="_blank" id="btn-payment" href="javascript::" style="background-color: #04be04; color: white;" disabled >Thanh toán</a>
+                                </c:when>
+                            </c:choose>
+                            <script>
+                                function getLinkPayment(feedId) {
+                                    fetch("/laptrinhjava/api/payment/zalopay/" + feedId).then(res => res.json()).then(url => {
+                                        document.getElementById("btn-payment").setAttribute("href", url)
+                                    })
+                                }
+                            </script>
+                        </c:if>
                     </div>
                 </div>
                 <div class="row mt-2 mt-md-3">
@@ -342,75 +347,33 @@
         </div>
         <!-- End Feed-Auction  -->
 
-        <!-- Friends -->
-        <div class="col-lg-2 p-0 flex-column" style="display: inherit">
-            <div class="position-lg-sticky d-none d-lg-block" style="top: 78px">
-                <div
-                    class="
-                    d-none d-lg-flex
-                    justify-content-between
-                    px-2
-                    mt-lg-3
-                    "
-                    >
-                    <h4 class="text-center">Người liên hệ</h4>
+        <!-- Notification -->
+        <div class="col-lg-2 p-0 flex-column" style="display: inherit;">
+            <div class="position-lg-sticky" style="top: 78px;">
+                <div class="d-none d-lg-flex justify-content-between px-2 mt-lg-3">
+                    <h4 class="text-center">Thông báo</h4>
                 </div>
-                <ul
-                    class="
-                    w-100
-                    list-group
-                    cus-content-friends
-                    list-group-flush
-                    d-flex
-                    flex-row flex-lg-column
-                    overflow-auto
-                    pb-2
-                    "
-                    style="top: 101px"
-                    >
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-2.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Nguyễn Thị Hồng Hà</p>
-                    </li>
-                </ul>
+                <c:if test="${currentUser != null && notifications != null && notifications.size() != 0}">
+                    <ul id="notification-content" class="w-100 list-group cus-content-friends list-group-flush d-flex flex-row flex-lg-column overflow-auto pb-2" style="top: 101px;" >
+                        <c:forEach items="${notifications}" var="message">
+                            <li class="list-group-item-none shadow-sm border border-1 p-2">
+                                <div class="d-flex justify-content-between">
+                                    <a class="fs-6 mb-0" style="white-space: nowrap;overflow: hidden;" href="${message.url != null ? message.url : 'javascript::'}">
+                                        ${message.title}
+                                    </a>
+                                    
+                                </div>
+
+                                <p class="mb-0 text-muted" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+                                    ${message.content}
+                                </p>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
             </div>
         </div>
-        <!-- End Friends -->
+        <!-- End Notification -->
     </div>
 </div>
 <!-- End Content -->

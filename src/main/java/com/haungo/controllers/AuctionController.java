@@ -8,6 +8,7 @@ import com.haungo.pojos.*;
 import com.haungo.service.AuctionCommentService;
 import com.haungo.service.AuctionService;
 import com.haungo.service.CategoryService;
+import com.haungo.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,7 @@ public class AuctionController {
     @Autowired private AuctionService auctionService;
     @Autowired private CategoryService categoryService;
     @Autowired private AuctionCommentService auctionCommentService;
+    @Autowired private NotificationService notificationService;
 
     @ModelAttribute
     public void commonAttrs(Model model, HttpSession session) {
@@ -87,17 +89,21 @@ public class AuctionController {
     @RequestMapping(value = {"/auction/{id}"}, method = RequestMethod.GET)
     public String auctionDetail(Model model,@PathVariable String id, HttpSession session) {
         Auction auction = this.auctionService.getAuctionById(Integer.parseInt(id));
-
+        model.addAttribute("auction", auction);
+        model.addAttribute("auctionComment", new AuctionComment());
         User user = (User) session.getAttribute("currentUser");
-        if (user != null && user.getId().equals(auction.getUser().getId())){
+
+        if (user == null){
+            return "auctionDetail";
+        } else if (user.getId().equals(auction.getUser().getId())){
             List<AuctionComment> auctionComments = this.auctionCommentService.getCommentByAuctionId(auction.getId());
             model.addAttribute("comments", auctionComments);
-        } else if (user != null && !auction.getCountComment().equals(0)) {
+        } else if (!auction.getCountComment().equals(0)) {
             List<AuctionComment> auctionComments = this.auctionCommentService.getMyAuctionCommentByAuctionId(auction.getId(), user.getId());
             model.addAttribute("comments", auctionComments);
         }
-        model.addAttribute("auctionComment", new AuctionComment());
-        model.addAttribute("auction", auction);
+
+        model.addAttribute("notifications", this.notificationService.getNotificationByUid(user.getId()));
         return "auctionDetail";
     }
 
@@ -107,6 +113,7 @@ public class AuctionController {
         if (result.hasErrors()){
             return String.format("forward:/auction/%s", auctionId);
         }
+        Auction auction = this.auctionService.getAuctionById(Integer.parseInt(auctionId));
         User user = (User) session.getAttribute("currentUser");
         auctionComment.setAuctionId(Integer.parseInt(auctionId));
         auctionComment.setUserId(user.getId());
@@ -116,6 +123,11 @@ public class AuctionController {
             model.addAttribute("messageErrorCreateAuctionComment", "Đã có lỗi xảy ra vui lòng thử lại");
             return String.format("forward:/auction/%s", auctionId);
         }
+
+        String content = Notification.genContent(user, " đã đấu giá") + auctionComment.getPrice().toString();
+        Notification notification = new Notification(Notification.AddAuctionComment, content, auction.getUser());
+        this.notificationService.addNotification(notification);
+
         return String.format("redirect:/auction/%s", auctionId);
     }
 

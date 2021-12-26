@@ -86,11 +86,11 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("Người dùng không tồn tại");
         }
 
-        Set<GrantedAuthority> authoritySet = new HashSet<>();
-        authoritySet.add(new SimpleGrantedAuthority(user.getUserRole()));
+        Set<GrantedAuthority> auth = new HashSet<>();
+        auth.add(new SimpleGrantedAuthority(user.getUserRole()));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), authoritySet
+                user.getUsername(), user.getPassword(), auth
         );
     }
 }

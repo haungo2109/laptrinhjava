@@ -12,7 +12,7 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-attribute name="content" value="base" />
         
         <put-list-attribute name="stylesheets"></put-list-attribute>
-    
+        <put-list-attribute name="javascripts"></put-list-attribute>
     </definition>
     
     <definition name="index" extends="baseLayout">
@@ -21,6 +21,10 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/style.css" />
+        </put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/js/main.js" />
+            <add-attribute value="/js/notification.js" />
         </put-list-attribute>
     </definition>
     
@@ -31,6 +35,9 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/category.css" />
         </put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/js/main.js" />
+        </put-list-attribute>
     </definition>
     
     <definition name="auctionDetail" extends="baseLayout">
@@ -39,6 +46,11 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/itemdetail.css" />
+            <add-attribute value="/css/blue.css" />
+        </put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/js/main.js" />
+            <add-attribute value="/js/notification.js" />
         </put-list-attribute>
     </definition>
     
@@ -49,6 +61,9 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/user.css" />
         </put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/js/main.js" />
+        </put-list-attribute>
     </definition>
     
     <definition name="auctionJoin" extends="baseLayout">
@@ -58,5 +73,36 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
         <put-list-attribute name="stylesheets">
             <add-attribute value="/css/favorites.css" />
         </put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/js/main.js" />
+        </put-list-attribute>
     </definition>
+    
+    
+    <!--ADMIN PAGE-->
+    <definition name="adminBaseLayout" template="/WEB-INF/layout/adminbase.jsp">
+        <put-attribute name="title" value="KanJ - Admin" />
+        <put-attribute name="header" value="/WEB-INF/layout/adminheader.jsp" />
+        <put-attribute name="footer" value="" />
+        <put-attribute name="content" value="base" /> 
+        
+        <put-list-attribute name="stylesheets"></put-list-attribute>
+        <put-list-attribute name="javascripts">
+            <add-attribute value="/js/stats.js" />
+        </put-list-attribute>   
+    </definition>
+    
+    <definition name="admin" extends="adminBaseLayout">
+        <put-attribute name="title" value="KanJ - Admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/admin.jsp" />
+    </definition>
+    <definition name="reportPost" extends="adminBaseLayout">
+        <put-attribute name="title" value="KanJ - Admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/reportPost.jsp" />
+    </definition>
+    <definition name="reportAuction" extends="adminBaseLayout">
+        <put-attribute name="title" value="KanJ - Admin" />
+        <put-attribute name="content" value="/WEB-INF/jsp/reportAuction.jsp" />
+    </definition>
+    <!--END ADMIN PAGE-->
 </tiles-definitions>

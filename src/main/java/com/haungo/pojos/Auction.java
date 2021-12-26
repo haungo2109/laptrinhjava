@@ -92,6 +92,14 @@ public class Auction implements Serializable {
         this.deadline = new Date();
         this.createAt = new Date();
     }
+    public void filterMainField(){
+        this.user = null;
+        this.category = null;
+        this.buyler = null;
+        this.payment = null;
+        this.comments = null;
+        this.images = null;
+    }
     public AuctionComment getCommentByUserId(Integer id){
         for (AuctionComment auctionComment: this.comments){
             if (auctionComment.getUser().getId().equals(id)) return auctionComment;

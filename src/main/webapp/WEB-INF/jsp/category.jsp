@@ -131,43 +131,25 @@
 
 
                 <!--Tool filter-->
-                <div class="filter-rs d-flex justify-content-between">
-                    <div class="left d-flex align-items-center">
-                        <h5 class="d-none d-sm-block m-0 one-line me-1">
-                        </h5>
-                        <div class="input-group">
-                            <input
-                                type="text"
-                                id="filter-kw"
-                                class="form-control"
-                                placeholder="Nhập từ khóa"
-                                aria-label="Nhập từ khóa cần lọc"
-                                />
-                            <button
-                                class="btn btn-outline-secondary"
-                                type="button"
-                                onclick="searchKw()"
+                <div class="filter-rs">
+                    <div class="d-inline-block">
+                        <div class="align-items-center input-group">
+                            <h5 class="d-none d-sm-block m-0 one-line input-group-text">Lọc</h5>
+                            <select
+                                class="form-select"
+                                aria-label="Default select example"
+                                id="sort-auction"
+                                onchange="sortAuction()"
                                 >
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="right d-flex align-items-center">
-                        <h5 class="d-none d-sm-block m-0 one-line me-1">Lọc</h5>
-                        <select
-                            class="form-select"
-                            aria-label="Default select example"
-                            id="sort-auction"
-                            onchange="sortAuction()"
-                            >
-                            <option selected value="createAt">Mới nhất</option>
-                            <option value="countComment">Nổi bật nhất</option>
-                        </select>
-                    </div>
+                                <option selected value="createAt">Mới nhất</option>
+                                <option value="countComment">Nổi bật nhất</option>
+                            </select>
+                        </div></div>
                 </div>
                 <script>
                     let params = getQueryParams();
-                    if (params.sort) document.getElementById("sort-auction").value = params.sort;
+                    if (params.sort)
+                        document.getElementById("sort-auction").value = params.sort;
                 </script>
                 <!--End Tool filter-->
 
@@ -183,26 +165,6 @@
                                         class="card-img-top object-fit-cover"
                                         />
                                 </c:if>
-                                <button
-                                    class="
-                                    btn btn-light
-                                    position-absolute
-                                    top-0
-                                    end-0
-                                    rounded-circle
-                                    p-1
-                                    mt-1
-                                    me-1
-                                    "
-                                    style="width: 30px; height: 30px"
-                                    type="button"
-                                    >
-                                    <i
-                                        class="fas fa-heart"
-                                        style="color: #dc3545; font-size: 20px"
-                                        ></i>
-                                </button>
-
                                 <div class="card-body p-0">
                                     <div
                                         class="

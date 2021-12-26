@@ -44,8 +44,7 @@
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"
         ></script>    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js" integrity="sha512-tMabqarPtykgDtdtSqCL3uLVM0gS1ZkUAVhRFu1vSEFgvB73niFQWJuvviDyBGBH22Lcau4rHB5p2K2T0Xvr6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="<c:url value="/js/utils.js"/>"></script>
         <style>
             .textInvalidForm{
@@ -63,31 +62,5 @@
                 <script src="<c:url value="${script}"/>"></script>
             </c:forEach>
         </c:if>
-        <script>
-            window.onload = function (){
-                connect();
-            }
-
-            window.onbeforeunload = function () {
-                disconnect();
-            };
-        </script>
-        <script>
-            let items = document.getElementsByClassName("time-feed");
-            for (const c of items) {
-                let t = new Date(c.textContent.trim());
-                if (t.getTime()) {
-                    c.textContent = timeSince(t);
-                }
-            }
-
-            let itemTimeLeft = document.getElementsByClassName("time-left");
-            for (const c of itemTimeLeft) {
-                let t = new Date(c.textContent.trim());
-                if (t.getTime()) {
-                    c.textContent = futureSince(t);
-                }
-            }
-        </script>
     </body>
 </html>

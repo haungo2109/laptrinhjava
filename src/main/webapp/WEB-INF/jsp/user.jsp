@@ -102,54 +102,42 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="mt-2 mt-md-3">
-                            Riverside Galleries offers the finest quality,
-                            certified collection of unique jewelry. We offer our
-                            pieces at wholesale prices with exceptional value.
-                            Whether your looking for a gift or to add to your
-                            personal collection Riverside Galleries has what you
-                            looking for. Preview our collection at one of our
-                            auction partners and give us your best bid. You will
-                            be amazed at the quality and value!
-                        </p>
                     </div>
-                    <div class="col-12 col-sm-6 mb-3">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div style="height: 300px">
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d7808.550551918089!2d107.1149681!3d11.8859101!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1639107306520!5m2!1sen!2s"
-                                        width="100%"
-                                        height="100%"
-                                        style="border: 0"
-                                        allowfullscreen=""
-                                        loading="lazy"
-                                        ></iframe>
-                                </div>
-                                <div class="">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            Thôn 10, Bom Bo Bù Đăng
-                                        </h5>
-                                        <h5 class="fs-5">Bình Phước - VN</h5>
-                                        <div
-                                            class="
-                                            d-flex
-                                            justify-content-between
-                                            "
-                                            >
-                                            <p class="card-text">
-                                                (+84) 383793662
-                                            </p>
-                                            <a href="#mesage" class="card-text"
-                                               >Nhắn tin</a
-                                            >
+                    <c:if test="${currentUser.address != null}">
+                        <div class="col-12 col-sm-6 mb-3">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div style="height: 300px">
+                                        <iframe
+                                            width="100%"
+                                            height="100%"
+                                            style="border: 0"
+                                            allowfullscreen=""
+                                            loading="lazy"
+                                            src="https://www.google.com/maps/embed/v1/search?q=${currentUser.address}&key=AIzaSyDqSJrCEldqtE3lwBUc2HmIC54osZj8Qkk">
+                                        </iframe>
+                                    </div>
+                                    <div class="">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                ${currentUser.address}
+                                            </h5>
+                                            <div
+                                                class="
+                                                d-flex
+                                                justify-content-between
+                                                "
+                                                >
+                                                <p class="card-text">
+                                                    Số điện thoại: ${currentUser.phone}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
                 </div>
                 <!-- End User && Map  -->
 
@@ -480,7 +468,7 @@
                             </div>
                             <div class="col-2 image-review">
                                 <img
-                                    src="public/assets/img/item/item-1.jpg"
+                                    src="<c:url value="/img/item/item-1.jpg" />"
                                     alt=""
                                     class="object-fit-cover"
                                     />
@@ -534,7 +522,7 @@
                             </div>
                             <div class="col-2 image-review">
                                 <img
-                                    src="public/assets/img/item/item-1.jpg"
+                                    src="<c:url value="/img/item/item-3.jpg" />"
                                     alt=""
                                     class="object-fit-cover"
                                     />
@@ -553,75 +541,58 @@
                         style="top: -87px"
                         ></div>
                     <h2 class="fs-2 mt-3 pt-md-4">Đấu giá đã hoàn thành</h2>
-                    <c:forEach items="${auctions}" var="auction" >
-                        <c:if test="${auction.acceptPrice != null}">
-                            <div class="card position-relative border-0 m-2">
-                                <c:if test="${auction.images != null && auction.images.size() > 0}">
-                                    <img
-                                        src="${auction.images.iterator().next().image}"
-                                        class="card-img-top object-fit-cover"
-                                        />
-                                </c:if>
-                                <button
-                                    class="
-                                    btn btn-light
-                                    position-absolute
-                                    top-0
-                                    end-0
-                                    rounded-circle
-                                    p-1
-                                    mt-1
-                                    me-1
-                                    "
-                                    style="width: 30px; height: 30px"
-                                    type="button"
-                                    >
-                                    <i
-                                        class="fas fa-heart"
-                                        style="color: #dc3545; font-size: 20px"
-                                        ></i>
-                                </button>
-
-                                <div class="card-body p-0">
-                                    <div
-                                        class="
-                                        top-info-item
-                                        d-flex
-                                        justify-content-between
-                                        "
-                                        >
-                                        <p class="mb-0">
-                                            <span style="color: #dc3545"
-                                                  >10 Hrs Left</span
-                                            >
-                                        </p>
-                                        <a class="mb-0" href="<c:url value="/user/${auction.user.id}" />">
-                                            ${auction.user.firstName} ${auction.user.lastName}
-                                        </a>
-                                    </div>
-                                    <div class="my-0 my-sm-1 my-md-2">
-                                        <h4
+                    <div class="d-flex flex-wrap">
+                        <c:forEach items="${auctions}" var="auction" >
+                            <c:if test="${auction.acceptPrice != null}">
+                                <div class="card position-relative border-0 m-2" style="width: 30%; box-sizing: border-box;">
+                                    <c:if test="${auction.images != null && auction.images.size() > 0}">
+                                        <img
+                                            src="${auction.images.iterator().next().image}"
+                                            class="card-img-top object-fit-cover w-100"
+                                            height="300"
+                                            />
+                                    </c:if>
+                                    <div class="card-body p-0">
+                                        <div
                                             class="
-                                            m-0
-                                            d-inline-block
-                                            text-uppercase text-xs
-                                            font-weight-bold
+                                            top-info-item
+                                            d-flex
+                                            justify-content-between
                                             "
                                             >
-                                            ${auction.basePrice}
-                                        </h4>
-                                        <small class="text-capitalize">(${auction.countComment} bids)</small>
+                                            <p class="mb-0">
+                                                <span style="color: #dc3545"
+                                                      >10 Hrs Left</span
+                                                >
+                                            </p>
+                                            <a class="mb-0" href="<c:url value="/user/${auction.user.id}" />">
+                                                ${auction.user.firstName} ${auction.user.lastName}
+                                            </a>
+                                        </div>
+                                        <div class="my-0 my-sm-1 my-md-2">
+                                            <h4
+                                                class="
+                                                m-0
+                                                d-inline-block
+                                                text-uppercase text-xs
+                                                font-weight-bold
+                                                "
+                                                >
+                                                ${auction.basePrice}
+                                            </h4>
+                                            <small class="text-capitalize">(${auction.countComment} bids)</small>
+                                        </div>
+                                        <a
+                                            href="<c:url value="/auction/${auction.id}" />"
+                                            class="text-dark fs-5 fs-md-4 d-block"
+                                            >
+                                            ${auction.title}
+                                        </a>
                                     </div>
-                                    <a
-                                        href="<c:url value="/auction/${auction.id}" />"
-                                        class="text-dark fs-5 fs-md-4 d-block"
-                                        >
-                                        ${auction.title}
-                                    </a>
                                 </div>
-                            </div>
-                        </c:if>
-                    </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </div>
                 </div>
                 <!-- End Auction Finish -->
             </session>

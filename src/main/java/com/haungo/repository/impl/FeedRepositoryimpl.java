@@ -50,7 +50,7 @@ public class FeedRepositoryimpl implements FeedRepository {
 
         Query q = session.createQuery(query);
 
-        int max = 5;
+        int max = 3;
         q.setMaxResults(max);
         q.setFirstResult((page - 1) * max);
 

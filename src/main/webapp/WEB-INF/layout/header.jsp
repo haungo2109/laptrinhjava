@@ -74,29 +74,27 @@
             <ul class="navbar-nav navbar-nav-hover mx-auto align-items-lg-center">
                 <li class="nav-item mx-2 d-none d-lg-block">
                     <div class="input-group">
-                        <div>
-                            <select
-                                class="form-select"
-                                aria-label="type search"
-                                >
-                                <option selected>Loại tìm kiếm</option>
-                                <option value="1">Tên người</option>
-                                <option value="2">Nội dung</option>
-                                <option value="3">Tiêu đề</option>
-                            </select>
-                        </div>
+                        <span class="input-group-text">Tìm kiếm</span>
                         <input
                             type="text"
                             style="width: 365px;"
                             class="form-control flex-grow-3"
+                            id="input-search-kw"
                             aria-label="Text input with dropdown button"
                             />
                         <button
                             class="btn btn-outline-secondary"
-                            type="button"
+                            type="submit"
+                            onclick="searchKw()"
                             >
                             <i class="fas fa-search"></i>
                         </button>
+                        <script>
+                            function searchKw(){
+                                let kw = document.getElementById("input-search-kw").value.trim();
+                                window.location.href = "/laptrinhjava/category/?kw="+kw;
+                            }
+                        </script>
                     </div>
                 </li>
                 <c:choose>

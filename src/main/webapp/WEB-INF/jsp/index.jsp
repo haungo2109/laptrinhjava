@@ -95,178 +95,193 @@
                     </div>
                 </c:if>
                 <!-- End CreateButton  -->
-
                 <!--Show List Feed-->
                 <div>
-                    <c:if test="${feeds != null}" >
-                        <c:forEach items="${feeds}" var="feed">
-                            <div class="d-flex flex-column pt-3" id="feedId${feed.id}">
-                                <div class="mx-auto item-feed-content">
-                                    <div class="card shadow-sm">
-                                        <div class="card-header bg-white p-0 mx-3 mt-3 border-0">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="right d-flex">
-                                                    <div class="me-2">
-                                                        <img height="48px" width="48px" class="object-fit-cover rounded-circle" src="${feed.user.avatar}" alt="user-1">
+                    <div id="feed-content">
+                        <c:if test="${feeds != null}" >
+                            <c:forEach items="${feeds}" var="feed">
+                                <div class="d-flex flex-column pt-3" id="feedId${feed.id}">
+                                    <div class="mx-auto item-feed-content">
+                                        <div class="card shadow-sm">
+                                            <div class="card-header bg-white p-0 mx-3 mt-3 border-0">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="right d-flex">
+                                                        <div class="me-2">
+                                                            <img height="48px" width="48px" class="object-fit-cover rounded-circle" src="${feed.user.avatar}" alt="user-1">
+                                                        </div>
+                                                        <div class="info">
+                                                            <a href="<c:url value='/user/${feed.user.id}' />" class="m-0 fs-5">${feed.user.firstName} ${feed.user.lastName}</a>
+                                                            <p class="m-0 text-muted time-feed"> ${feed.createAt}</p>
+                                                        </div>
                                                     </div>
-                                                    <div class="info">
-                                                        <a href="<c:url value='/user/${feed.user.id}' />" class="m-0 fs-5">${feed.user.firstName} ${feed.user.lastName}</a>
-                                                        <p class="m-0 text-muted time-feed"> ${feed.createAt}</p>
-                                                    </div>
-                                                </div>
-                                                <c:if test="${currentUser != null}">
-                                                    <div class="left">
-                                                        <button type="button" 
-                                                                class="btn btn-link dropdown-toggle bg-white" 
-                                                                id="optionFeed"
-                                                                data-bs-toggle="dropdown" 
-                                                                aria-expanded="false" 
-                                                                data-bs-offset="10,20"
-                                                                >
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="optionFeed">
-                                                            <c:choose>
-                                                                <c:when test="${currentUser != null && feed.user.id == currentUser.id}">
-                                                                    <li>
-                                                                        <button class="btn dropdown-item" onclick="showEditFeed(${feed.id})" 
-                                                                                role="button" data-bs-toggle="modal" data-bs-target="#editFeedModal">
-                                                                            <i class="far fa-edit" style="width: 22px;"></i> 
-                                                                            Sửa
-                                                                        </button>
-                                                                    </li>
-                                                                    <li>
-                                                                        <button class="btn dropdown-item" onclick="deleteFeed(${feed.id})">
-                                                                            <i class="far fa-trash-alt" style="width: 22px;"></i> Xóa
-                                                                        </button>
-                                                                    </li>
-                                                                </c:when>
-                                                                <c:when test="${currentUser != null}">
-                                                                    <li>
-                                                                        <button class="btn dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#reportModal" onclick="showReport(${feed.user.id})">
-                                                                            <i class="fas fa-exclamation" style="width: 22px;"></i> Báo cáo
-                                                                        </button>
-                                                                    </li>
-                                                                </c:when>
-                                                            </c:choose>
-                                                        </ul>
-                                                    </div>
-                                                </c:if>
-                                            </div>
-                                        </div>
-                                        <div class="card-body pt-2" style="max-width: 733px;">
-                                            <div class="content-feed my-2">
-                                                <p class="card-description mb-2" id="feed-content-${feed.id}">
-                                                    ${feed.content}
-                                                </p>
-                                            </div>
-                                            <c:if test="${feed.images != null && feed.images.size() != 0}">
-                                                <div href="javascript:;" class="d-block">
-                                                    <div id="carouselExampleControls${feed.id}" class="carousel slide" data-bs-ride="carousel">
-                                                        <div class="carousel-inner" id="feed-images-${feed.id}">
-                                                            <c:forEach items="${feed.images}" var="image" varStatus="loop">
+                                                    <c:if test="${currentUser != null}">
+                                                        <div class="left">
+                                                            <button type="button" 
+                                                                    class="btn btn-link dropdown-toggle bg-white" 
+                                                                    id="optionFeed"
+                                                                    data-bs-toggle="dropdown" 
+                                                                    aria-expanded="false" 
+                                                                    data-bs-offset="10,20"
+                                                                    >
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="optionFeed">
                                                                 <c:choose>
-                                                                    <c:when test="${loop.index == 0}">
-                                                                        <div class="carousel-item active" style="height: 345px; overflow: hidden;" >
-                                                                            <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="first image">
-                                                                        </div>
+                                                                    <c:when test="${currentUser != null && feed.user.id == currentUser.id}">
+                                                                        <li>
+                                                                            <button class="btn dropdown-item" onclick="showEditFeed(${feed.id})" 
+                                                                                    role="button" data-bs-toggle="modal" data-bs-target="#editFeedModal">
+                                                                                <i class="far fa-edit" style="width: 22px;"></i> 
+                                                                                Sửa
+                                                                            </button>
+                                                                        </li>
+                                                                        <li>
+                                                                            <button class="btn dropdown-item" onclick="deleteFeed(${feed.id})">
+                                                                                <i class="far fa-trash-alt" style="width: 22px;"></i> Xóa
+                                                                            </button>
+                                                                        </li>
                                                                     </c:when>
-                                                                    <c:otherwise>
-                                                                        <div class="carousel-item" style="height: 345px; overflow: hidden;" >
-                                                                            <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="${image.id}">
-                                                                        </div>
-                                                                    </c:otherwise>
+                                                                    <c:when test="${currentUser != null}">
+                                                                        <li>
+                                                                            <button class="btn dropdown-item" role="button" data-bs-toggle="modal" data-bs-target="#reportModal" onclick="showReport(${feed.user.id})">
+                                                                                <i class="fas fa-exclamation" style="width: 22px;"></i> Báo cáo
+                                                                            </button>
+                                                                        </li>
+                                                                    </c:when>
                                                                 </c:choose>
-                                                            </c:forEach>
+                                                            </ul>
                                                         </div>
-                                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls${feed.id}" data-bs-slide="prev">
-                                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Previous</span>
-                                                        </button>
-                                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls${feed.id}" data-bs-slide="next">
-                                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Next</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </c:if>
-                                            <div class="control d-flex justify-content-between align-items-center mt-2">
-                                                <c:choose>
-                                                    <c:when test="${feed.isUserLike == true}">
-                                                        <button class="btn btn-link" onclick="likeFeed(${feed.id}, this)" data-like="true">
-                                                            <i class="fas fa-thumbs-up me-2" style="color: gray; font-size: 20px;"></i>
-                                                            ${feed.likes.size()} Đã thích
-                                                        </button>
-                                                    </c:when>
-                                                    <c:when test="${currentUser == null}">
-                                                        <button class="btn btn-link">
-                                                            <i class="fas fa-thumbs-up me-2" style="color: gray; font-size: 20px;"></i>
-                                                            ${feed.likes.size()} Thích
-                                                        </button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button class="btn btn-link" onclick="likeFeed(${feed.id}, this)" data-like="false">
-                                                            <i style="color: gray; font-size: 20px;" class="far fa-thumbs-up me-2"></i>
-                                                            ${feed.likes.size()} Thích
-                                                        </button>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <div class="y-divide"></div>
-                                                <button class="btn btn-link" onclick="showCommentFeed(${feed.id}, this)" data-userId="${currentUser.id}"> 
-                                                    <i style="color: gray; font-size: 20px;" class="far fa-comment-alt me-2"></i>
-                                                    ${feed.countComment} Bình luận
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="comment-content d-none">
-                                        <c:if test="${currentUser != null}">
-                                            <div class="d-flex my-2 px-3">
-                                                <div class="d-flex me-2">
-                                                    <img src="${currentUser.avatar}" class="rounded-circle object-fit-cover" alt="user" width="40px" height="40px"/>
-                                                    <a class="mb-0 ms-1" href="<c:url value="/user/${currentUser.id}" />" style="white-space: nowrap;" >
-                                                        ${currentUser.firstName} ${currentUser.lastName}
-                                                    </a>
-                                                </div>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" placeholder="Nhập nội dung..." id="input-feed-content-${feed.id}">
-                                                    <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="sendFeedComment(${feed.id}, this)" 
-                                                            data-username="${currentUser.firstName} ${currentUser.lastName}"
-                                                            data-userId="${currentUser.id}"
-                                                            data-avatar="${currentUser.avatar}">
-                                                        <i class="fas fa-paper-plane"></i>
-                                                    </button>
+                                                    </c:if>
                                                 </div>
                                             </div>
-                                        </c:if>
-                                        <div class="textInvalidForm">
-                                            
-                                        </div>
-                                        <div id="list-comment-${feed.id}">
-                                            <c:if test="${comments != null}">
-                                                <c:forEach items="comments" var="comment">
-                                                    <div class="d-flex">
-                                                        <div class="d-flex me-2">
-                                                            <img src="${comment.user.avatar}" class="rounded-circle object-fit-cover" alt="user" width="40px" height="40px"/>
-                                                            <a class="mb-0 ms-1" href="<c:url value="/user/${comment.user.id}" />" >
-                                                                ${comment.user.firstName} ${comment.user.lastName}
-                                                            </a>
-                                                        </div>
-                                                        <div class="input-group mb-3">
-                                                            <input type="text" class="form-control" placeholder="Nhập nội dung...">
-                                                            <button class="btn btn-outline-secondary" type="button" id="button-addon1">
-                                                                <i class="fas fa-paper-plane"></i>
+                                            <div class="card-body pt-2" style="max-width: 733px;">
+                                                <div class="content-feed my-2">
+                                                    <p class="card-description mb-2" id="feed-content-${feed.id}">
+                                                        ${feed.content}
+                                                    </p>
+                                                </div>
+                                                <c:if test="${feed.images != null && feed.images.size() != 0}">
+                                                    <div href="javascript:;" class="d-block">
+                                                        <div id="carouselExampleControls${feed.id}" class="carousel slide" data-bs-ride="carousel">
+                                                            <div class="carousel-inner" id="feed-images-${feed.id}">
+                                                                <c:forEach items="${feed.images}" var="image" varStatus="loop">
+                                                                    <c:choose>
+                                                                        <c:when test="${loop.index == 0}">
+                                                                            <div class="carousel-item active" style="height: 345px; overflow: hidden;" >
+                                                                                <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="first image">
+                                                                            </div>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <div class="carousel-item" style="height: 345px; overflow: hidden;" >
+                                                                                <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="${image.id}">
+                                                                            </div>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </c:forEach>
+                                                            </div>
+                                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls${feed.id}" data-bs-slide="prev">
+                                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                                <span class="visually-hidden">Previous</span>
+                                                            </button>
+                                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls${feed.id}" data-bs-slide="next">
+                                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                                <span class="visually-hidden">Next</span>
                                                             </button>
                                                         </div>
                                                     </div>
-                                                </c:forEach>
+                                                </c:if>
+                                                <div class="control d-flex justify-content-between align-items-center mt-2">
+                                                    <c:choose>
+                                                        <c:when test="${feed.isUserLike == true}">
+                                                            <button class="btn btn-link" onclick="likeFeed(${feed.id}, this)" data-like="true">
+                                                                <i class="fas fa-thumbs-up me-2" style="color: gray; font-size: 20px;"></i>
+                                                                ${feed.likes.size()} Đã thích
+                                                            </button>
+                                                        </c:when>
+                                                        <c:when test="${currentUser == null}">
+                                                            <button class="btn btn-link">
+                                                                <i class="fas fa-thumbs-up me-2" style="color: gray; font-size: 20px;"></i>
+                                                                ${feed.likes.size()} Thích
+                                                            </button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button class="btn btn-link" onclick="likeFeed(${feed.id}, this)" data-like="false">
+                                                                <i style="color: gray; font-size: 20px;" class="far fa-thumbs-up me-2"></i>
+                                                                ${feed.likes.size()} Thích
+                                                            </button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <div class="y-divide"></div>
+                                                    <button class="btn btn-link" onclick="showCommentFeed(${feed.id}, this)" data-userId="${currentUser.id}"> 
+                                                        <i style="color: gray; font-size: 20px;" class="far fa-comment-alt me-2"></i>
+                                                        ${feed.countComment} Bình luận
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="comment-content d-none">
+                                            <c:if test="${currentUser != null}">
+                                                <div class="d-flex my-2 px-3">
+                                                    <div class="d-flex me-2">
+                                                        <img src="${currentUser.avatar}" class="rounded-circle object-fit-cover" alt="user" width="40px" height="40px"/>
+                                                        <a class="mb-0 ms-1" href="<c:url value="/user/${currentUser.id}" />" style="white-space: nowrap;" >
+                                                            ${currentUser.firstName} ${currentUser.lastName}
+                                                        </a>
+                                                    </div>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Nhập nội dung..." id="input-feed-content-${feed.id}">
+                                                        <button class="btn btn-outline-secondary" type="button" id="button-addon1" onclick="sendFeedComment(${feed.id}, this)" 
+                                                                data-username="${currentUser.firstName} ${currentUser.lastName}"
+                                                                data-userId="${currentUser.id}"
+                                                                data-avatar="${currentUser.avatar}">
+                                                            <i class="fas fa-paper-plane"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </c:if>
+                                            <div class="textInvalidForm">
+
+                                            </div>
+                                            <div id="list-comment-${feed.id}" class="mt-3">
+                                                <c:if test="${comments != null}">
+                                                    <c:forEach items="comments" var="comment">
+                                                        <div class="d-flex">
+                                                            <div class="d-flex me-2">
+                                                                <img src="${comment.user.avatar}" class="rounded-circle object-fit-cover" alt="user" width="40px" height="40px"/>
+                                                                <a class="mb-0 ms-1" href="<c:url value="/user/${comment.user.id}" />" >
+                                                                    ${comment.user.firstName} ${comment.user.lastName}
+                                                                </a>
+                                                            </div>
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control" placeholder="Nhập nội dung...">
+                                                                <button class="btn btn-outline-secondary" type="button" id="button-addon1">
+                                                                    <i class="fas fa-paper-plane"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                    <c:choose>
+                        <c:when test="${currentUser != null}">
+                            <div class="btn btn-link w-100" 
+                                 data-uid="${currentUser.id}"
+                                 data-avatar="${currentUser.avatar}"
+                                 data-fullName="${currentUser.firstName} ${currentUser.lastName}"
+                                 onclick="loadMoreFeed(this)" id="btn-load-more">
+                                Xem tiếp
                             </div>
-                        </c:forEach>
-                    </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="btn btn-link w-100" onclick="loadMoreFeed(this)" id="btn-load-more">Xem tiếp</div>
+                        </c:otherwise>
+                    </c:choose>
                     <c:if test="${auctions != null}" >
                         <h4 class="fs-4 mt-md-3 mb-md-2 mt-2 mb-1 item-feed-content m-auto">Các đấu giá nổi bật</h4>
                         <c:forEach items="${auctions}" var="auction">
@@ -285,7 +300,7 @@
                                         </div>
                                         <div class="card-body pt-3">
                                             <h5 class="text-gradient text-warning text-uppercase text-xs font-weight-bold my-2">
-                                                ${auction.basePrice}
+                                                ${auction.currentPrice}
                                             </h5>
                                             <a href="<c:url value='/auction/${auction.id}' />" class="text-dark h5 d-block">
                                                 ${auction.title}
@@ -309,33 +324,33 @@
         </div>
         <!-- End Feed-Auction  -->
 
-        <!-- Friends -->
+        <!-- Notification -->
         <div class="order-1 order-lg-2 col-lg-3 p-0 flex-column" style="display: inherit;">
             <div class="position-lg-sticky" style="top: 78px;">
                 <div class="d-none d-lg-flex justify-content-between px-2 mt-lg-3">
-                    <h4 class="text-center">Người liên hệ</h4>
-                    <button type="button" class="btn btn-link p-0">
-                        <i class="fas fa-search" style="font-size: 20px;"></i>
-                    </button>
+                    <h4 class="text-center">Thông báo</h4>
                 </div>
-                <ul class="w-100 list-group cus-content-friends list-group-flush d-flex flex-row flex-lg-column overflow-auto pb-2" style="top: 101px;" >
-                    <li class="list-group-item d-flex align-items-center bg-none">
-                        <div class="me-3 position-relative">
-                            <img src="<c:url value="/img/avatar/user-2.jpg" /> " height="48px" width="48px" 
-                                 class="object-fit-cover avatar rounded-circle border " 
-                                 alt="user" />
-                            <span class="position-absolute bg-success rounded-circle"
-                                  style="width: 12px; height: 12px; bottom: 1px; right: 1px;"
-                                  >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Nguyễn Thị Hồng Hà</p>
-                    </li>
-                </ul>
+                <c:if test="${currentUser != null && notifications != null && notifications.size() != 0}">
+                    <ul id="notification-content" class="w-100 list-group cus-content-friends list-group-flush d-flex flex-row flex-lg-column overflow-auto pb-2" style="top: 101px;" >
+                        <c:forEach items="${notifications}" var="message">
+                            <li class="list-group-item-none shadow-sm border border-1 p-2">
+                                <div class="d-flex justify-content-between">
+                                    <a class="fs-6 mb-0" style="white-space: nowrap;overflow: hidden;" href="${message.url != null ? message.url : 'javascript::'}">
+                                        ${message.title}
+                                    </a>
+                                    <span class="time-feed ms-1" style="font-size: 12px;">${message.createAt}</span>
+                                </div>
+
+                                <p class="mb-0 text-muted" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+                                    ${message.content}
+                                </p>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
             </div>
         </div>
-        <!-- End Friends -->
+        <!-- End Notification -->
 
     </div>
 </div>
@@ -482,11 +497,9 @@
         var modal = document.getElementById('createFeedModal');
         var createFeedTab = document.querySelector('#create-feed-tab');
         var createAuctionTab = document.querySelector('#create-auction-tab');
-
         if (window.location.pathname.indexOf("create-feed") !== -1) {
             new bootstrap.Modal(modal, {keyboard: false}).show();
             new bootstrap.Tab(createFeedTab).show();
-
             console.log("open feed modal");
         } else if (window.location.pathname.indexOf("create-auction") !== -1) {
             new bootstrap.Modal(modal, {keyboard: false}).show();
@@ -518,7 +531,7 @@
                                     <p class="m-0 text-muted">Công khai</p>
                                 </div>
                             </div>
-                            <form enctype="multipart/form-data" id="form-edit-feed">
+                            <form enctype="multipart/form-data" id="form-edit-feed" onsubmit="return updateFeed(this);">
                                 <div class="textInvalidForm" id="editModelError">
                                 </div>
                                 <div class="mb-2 mb-md-3">
@@ -594,14 +607,12 @@
                     let reportModal = document.getElementById("reportModal");
                     let myForm = document.getElementById('form-report');
                     let formData = new FormData(myForm);
-
                     if (!formData.get("content")) {
                         document.getElementById("errorMessageReport").textContent = "Vui lòng điền nội dung"
                         return;
                     }
                     let url = "/laptrinhjava/api/add-report/" + myForm.getAttribute('data-user-report-id');
                     let body = JSON.stringify(Object.fromEntries(formData));
-
                     fetch(url, {
                         method: "post",
                         body,

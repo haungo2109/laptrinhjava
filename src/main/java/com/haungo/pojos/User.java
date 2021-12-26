@@ -60,9 +60,12 @@ public class User implements Serializable {
     @Pattern(regexp = "[0-9]{10}", message = "{validate.phone}")
     private String phone;
     private String avatar;
+
+    @Column
     @JsonIgnore
     private String address;
 
+    @Column
     @JsonIgnore
     @Temporal(TemporalType.DATE)
     @Past
@@ -71,6 +74,7 @@ public class User implements Serializable {
     private Integer rating;
 
     @JsonIgnore
+    @Basic(optional = false)
     @Column(name = "user_role")
     private String userRole;
 

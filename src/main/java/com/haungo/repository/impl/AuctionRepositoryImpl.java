@@ -44,8 +44,10 @@ public class AuctionRepositoryImpl implements AuctionRepository {
             Predicate p = builder.equal(root.get("category").get("id").as(Integer.class), Integer.parseInt(categoryId));
             query = query.where(p);
         }
+        Predicate filterActive = builder.equal(root.get("active").as(Boolean.class), true);
+        Predicate filterBeing = builder.equal(root.get("statusAuction").as(String.class), StatusAuction.being.toString());
 
-        query = query.orderBy(builder.desc(root.get(sort)));
+        query = query.where(filterActive, filterBeing).orderBy(builder.desc(root.get(sort)));
 
         Query q = session.createQuery(query);
 
@@ -139,16 +141,23 @@ public class AuctionRepositoryImpl implements AuctionRepository {
     public boolean setBuyler(Integer commentId, Integer auctionId) {
         Session session = sessionFactory.getObject().getCurrentSession();
 
+        AuctionComment auctionComment = session.get(AuctionComment.class, commentId);
+        Auction auction = session.get(Auction.class, auctionId);
         try {
+            auction.setBuyler(auctionComment.getUser());
+            auction.setStatusAuction(StatusAuction.inprocess.toString());
+            auction.setAcceptPrice(auctionComment.getPrice());
+            session.update(auction);
             Query auctionCommentQuery = session.createQuery("UPDATE AuctionComment A SET A.statusTransaction=:status WHERE A.id =:id ");
-            Query auctionQuery = session.createQuery("UPDATE Auction A SET A.statusAuction=:status WHERE A.id=:id");
-
-            auctionCommentQuery.setParameter("status", StatusAuction.inprocess.toString());
+//            Query auctionQuery = session.createQuery("UPDATE Auction A SET A.statusAuction=:status, A.acceptPrice=:price WHERE A.id=:id");
+//
+            auctionCommentQuery.setParameter("status", StatusTransaction.inprocess.toString());
             auctionCommentQuery.setParameter("id", commentId);
-            auctionQuery.setParameter("status", StatusTransaction.inprocess.toString());
-            auctionQuery.setParameter("id", auctionId);
-
-            if (auctionQuery.executeUpdate() == 1 && auctionCommentQuery.executeUpdate() == 1)
+//            auctionQuery.setParameter("status", StatusTransaction.inprocess.toString());
+//            auctionQuery.setParameter("id", auctionId);
+//            auctionQuery.setParameter("price", auctionComment.getPrice());
+//
+            if (auctionCommentQuery.executeUpdate() == 1)
                 return true;
         } catch (HibernateException ex) {
             System.err.println(ex.getMessage());

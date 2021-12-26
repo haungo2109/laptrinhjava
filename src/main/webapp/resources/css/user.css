@@ -86,6 +86,12 @@
         height: 77px;
         width: 77px;
     }
+    .auction-finish > .card {
+        width: 30%;
+    }
+    .auction-finish > .card > img{
+        height: 18rem;
+    }
 }
 
 /* lg */

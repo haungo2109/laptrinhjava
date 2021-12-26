@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.*;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -43,9 +44,11 @@ public class Feed implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed", cascade = CascadeType.REMOVE)
     private Set<FeedImage> images;
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feed", cascade = CascadeType.REMOVE)
     private Set<FeedComment> comments;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "social_network_post_like",
@@ -58,6 +61,7 @@ public class Feed implements Serializable {
     )
     private Set<User> likes;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL, targetEntity = Hashtag.class)
     @JoinTable(
             name = "social_network_post_hashtag",
@@ -72,6 +76,8 @@ public class Feed implements Serializable {
 
     @Transient
     private List<MultipartFile> files;
+    @Transient
+    private String feedId;
 
     public Feed() {
     }
@@ -227,5 +233,13 @@ public class Feed implements Serializable {
 
     public void setComments(Set<FeedComment> comments) {
         this.comments = comments;
+    }
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
     }
 }

@@ -19,7 +19,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication a) throws IOException, ServletException {
         User u = this.userDetailsService.getUserByUsername(a.getName());
         request.getSession().setAttribute("currentUser", u);
-
-        response.sendRedirect("/laptrinhjava/");
+        if (u.getUserRole().equals(User.ADMIN)) response.sendRedirect("/laptrinhjava/admin");
+        else response.sendRedirect("/laptrinhjava/");
     }
 }
