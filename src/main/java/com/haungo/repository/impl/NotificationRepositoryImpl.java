@@ -22,7 +22,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     @Override
     public List<Notification> getNotificationByUid(Integer uid) {
         Session session = sessionFactory.getObject().getCurrentSession();
-        Query q = session.createQuery("FROM Notification N WHERE N.user.id=:id");
+        Query q = session.createQuery("FROM Notification N WHERE N.user.id=:id ORDER BY N.createAt DESC");
         q.setParameter("id", uid);
         List<Notification>  notifications = q.getResultList();
         return notifications;

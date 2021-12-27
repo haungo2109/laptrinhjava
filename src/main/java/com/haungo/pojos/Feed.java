@@ -106,7 +106,7 @@ public class Feed implements Serializable {
     }
 
     public boolean isCanUpdate(){
-        if (this.images == null && content == null || id == null) return false;
+        if (this.images == null && content == null || feedId == null) return false;
         return true;
     }
 

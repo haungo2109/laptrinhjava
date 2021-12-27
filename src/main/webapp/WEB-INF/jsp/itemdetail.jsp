@@ -228,7 +228,7 @@
                                             <img src="<c:url value="/img/logo/logo-zalopay.svg" />" alt="logozalopage">
                                         </label>
                                     </div>
-                                        <a class="btn w-50" target="_blank" id="btn-payment" href="javascript::" style="background-color: #04be04; color: white;" disabled >Thanh toán</a>
+                                    <a class="btn w-50" target="_blank" id="btn-payment" href="javascript::" style="background-color: #04be04; color: white;" disabled >Thanh toán</a>
                                 </c:when>
                             </c:choose>
                             <script>
@@ -310,37 +310,43 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-5">
-                                <button
-                                    type="button"
-                                    class="btn rounded-0 w-100"
-                                    style="
-                                    color: #0aa2c0;
-                                    background-color: white;
-                                    border: 1px solid #0aa2c0;
-                                    "
-                                    >
-                                    Đặt câu hỏi
-                                </button>
-                            </div>
-                            <div class="col-7">
-                                <button
-                                    type="button"
-                                    class="btn rounded-0 w-100"
-                                    style="
-                                    background-color: #0aa2c0;
-                                    color: white;
-                                    "
-                                    >
-                                    <i
-                                        class="far fa-heart"
-                                        style="color: white"
-                                        ></i>
-                                    <span class="fs-6">Theo dõi</span>
-                                </button>
-                            </div>
-                        </div>
+                        <c:if test="${currentUser != null && currentUser.id != auction.user.id}">
+                            <div class="row">
+                                <div class="col-5">
+                                    <button
+                                        type="button"
+                                        class="btn rounded-0 w-100"
+                                        style="
+                                        color: #0aa2c0;
+                                        background-color: white;
+                                        border: 1px solid #0aa2c0;
+                                        "
+                                        onclick="sendMessage(${auction.user.id})"
+                                        >
+                                        Đặt câu hỏi
+                                    </button>
+                                </div>
+
+                                <div class="col-7">
+                                    <button
+                                        type="button"
+                                        class="btn rounded-0 w-100"
+                                        style="
+                                        background-color: #0aa2c0;
+                                        color: white;
+                                        "
+                                        id="btn-report"
+                                        role="button" data-bs-toggle="modal" data-bs-target="#reportModal" onclick="showReport(${auction.user.id})"
+                                        >
+                                        <i
+                                            class="fas fa-exclamation-circle"
+                                            style="color: white"
+                                            ></i>
+                                        <span class="fs-6">Báo cáo</span>
+                                    </button>
+                                </div>
+                            </div> 
+                        </c:if>
                     </div>
                 </div>
             </section>
@@ -361,7 +367,7 @@
                                     <a class="fs-6 mb-0" style="white-space: nowrap;overflow: hidden;" href="${message.url != null ? message.url : 'javascript::'}">
                                         ${message.title}
                                     </a>
-                                    
+
                                 </div>
 
                                 <p class="mb-0 text-muted" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
@@ -388,3 +394,73 @@
         });
     });
 </script>
+
+
+<!--Modal report-->
+<c:if test="${currentUser != null && typeReports != null}">
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0 position-relative">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 z-index-2000 p-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="card m-0 w-100 border-0">
+                        <div class="card-body my-3">
+                            <h3 class="mb-2 mb-md-3 m-auto">Báo cáo</h3>
+                            <form id="form-report" name="form-report">
+                                <div class="textInvalidForm" id="errorMessageReport">
+
+                                </div>
+                                <select class="form-select mb-md-3 mb-2" name="typeReportId" id="typeReportId" required>
+                                    <option selected value="${typeReports[0].id}">${typeReports[0].name}</option>
+                                    <c:forEach items="${typeReports}" var="typeReport" begin="1" >
+                                        <option value="${typeReport.id}">${typeReport.name}</option>
+                                    </c:forEach>
+                                </select>
+                                <div class="mb-2 mb-md-3">
+                                    <textarea class="form-control w-100"
+                                              name="content"
+                                              id="content"
+                                              placeholder="Nội dung báo cáo"
+                                              required
+                                              rows="3"
+                                              ></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary text-uppercase w-100 mt-3">Gửi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector("#form-report button[type='submit']")
+                .addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let reportModal = document.getElementById("reportModal");
+                    let myForm = document.getElementById('form-report');
+                    let formData = new FormData(myForm);
+                    if (!formData.get("content")) {
+                        document.getElementById("errorMessageReport").textContent = "Vui lòng điền nội dung"
+                        return;
+                    }
+                    let url = "/laptrinhjava/api/add-report/" + myForm.getAttribute('data-user-report-id');
+                    let body = JSON.stringify(Object.fromEntries(formData));
+                    fetch(url, {
+                        method: "post",
+                        body,
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then((response) => {
+                        if (response.status !== 200) {
+                            document.getElementById("errorMessageReport").textContent = "Đã có lỗi xảy ra vui lòng thử lại"
+                        }
+                        bootstrap.Modal.getInstance(document.getElementById('reportModal')).hide();
+                        document.getElementById("btn-report").textContent = "Đã gửi báo cáo"
+                        document.getElementById("btn-report").setAttribute("disabled", "true")
+                    })
+                });
+    </script>
+</c:if>

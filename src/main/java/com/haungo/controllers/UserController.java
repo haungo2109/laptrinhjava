@@ -2,8 +2,7 @@ package com.haungo.controllers;
 
 import com.haungo.pojos.Auction;
 import com.haungo.pojos.User;
-import com.haungo.service.AuctionService;
-import com.haungo.service.UserService;
+import com.haungo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +24,9 @@ import java.util.List;
 public class UserController {
     @Autowired private UserService userDetailsService;
     @Autowired private AuctionService auctionService;
+    @Autowired private TypeReportService typeReportService;
+    @Autowired private RatingService ratingService;
+    @Autowired private NotificationService notificationService;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String addUser(Model model, @ModelAttribute(value = "user") @Valid User user, BindingResult result) {
@@ -42,10 +44,16 @@ public class UserController {
     @RequestMapping(value = {"/user/{id}"}, method = RequestMethod.GET)
     public String userDetail(Model model, @PathVariable String id, HttpSession session) {
         //Check login send feed, auction for create, and current user
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser != null){
+            model.addAttribute("notifications", this.notificationService.getNotificationByUid(currentUser.getId()));
+        }
         User user = this.userDetailsService.getUserById(Integer.parseInt(id));
         List<Auction> auctions = this.auctionService.getMyAuction(Integer.parseInt(id));
         model.addAttribute("user", user);
+        model.addAttribute("typeReports", this.typeReportService.getTypeReports());
         model.addAttribute("auctions", auctions);
+        model.addAttribute("ratings", this.ratingService.getRatingByUserId(Integer.parseInt(id)));
         return "user";
     }
 }

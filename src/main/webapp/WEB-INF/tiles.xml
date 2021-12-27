@@ -62,6 +62,7 @@ Software Foundation//DTD Tiles Configuration 3.0//EN"
             <add-attribute value="/css/user.css" />
         </put-list-attribute>
         <put-list-attribute name="javascripts">
+            <add-attribute value="/js/notification.js" />
             <add-attribute value="/js/main.js" />
         </put-list-attribute>
     </definition>

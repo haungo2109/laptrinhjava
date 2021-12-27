@@ -69,41 +69,45 @@
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-5">
-                                    <button
-                                        type="button"
-                                        class="btn rounded-0 w-100"
-                                        style="
-                                        color: #0aa2c0;
-                                        background-color: white;
-                                        border: 1px solid #0aa2c0;
-                                        "
-                                        >
-                                        Đặt câu hỏi
-                                    </button>
+                            </div>  
+                            <c:if test="${currentUser != null && currentUser.id != user.id}">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <button
+                                            type="button"
+                                            class="btn rounded-0 w-100"
+                                            style="
+                                            color: #0aa2c0;
+                                            background-color: white;
+                                            border: 1px solid #0aa2c0;
+                                            "
+                                            >
+                                            Đặt câu hỏi
+                                        </button>
+                                    </div>
+                                    <div class="col-7">
+                                        <button
+                                            type="button"
+                                            class="btn rounded-0 w-100"
+                                            style="
+                                            background-color: #0aa2c0;
+                                            color: white;
+                                            "
+                                            id="btn-report"
+                                            role="button" data-bs-toggle="modal" data-bs-target="#reportModal" onclick="showReport(${user.id})"
+                                            >
+                                            <i
+                                                class="fas fa-exclamation-circle"
+                                                style="color: white"
+                                                ></i>
+                                            <span class="fs-6">Báo cáo</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-7">
-                                    <button
-                                        type="button"
-                                        class="btn rounded-0 w-100"
-                                        style="
-                                        background-color: #0aa2c0;
-                                        color: white;
-                                        "
-                                        >
-                                        <i
-                                            class="far fa-heart"
-                                            style="color: white"
-                                            ></i>
-                                        <span class="fs-6">Theo dõi</span>
-                                    </button>
-                                </div>
-                            </div>
+                            </c:if>
                         </div>
                     </div>
-                    <c:if test="${currentUser.address != null}">
+                    <c:if test="${user.address != null}">
                         <div class="col-12 col-sm-6 mb-3">
                             <div class="card mb-3">
                                 <div class="card-body">
@@ -114,7 +118,7 @@
                                             style="border: 0"
                                             allowfullscreen=""
                                             loading="lazy"
-                                            src="https://www.google.com/maps/embed/v1/search?q=${currentUser.address}&key=AIzaSyDqSJrCEldqtE3lwBUc2HmIC54osZj8Qkk">
+                                            src="https://www.google.com/maps/embed/v1/search?q=${user.address}&key=AIzaSyDqSJrCEldqtE3lwBUc2HmIC54osZj8Qkk">
                                         </iframe>
                                     </div>
                                     <div class="">
@@ -129,7 +133,7 @@
                                                 "
                                                 >
                                                 <p class="card-text">
-                                                    Số điện thoại: ${currentUser.phone}
+                                                    Số điện thoại: ${user.phone}
                                                 </p>
                                             </div>
                                         </div>
@@ -148,7 +152,7 @@
                         style="
                         top: 78px;
                         background-color: #ffffff;
-                        z-index: 1800;
+                        z-index: 1039;
                         "
                         >
                         <div class="d-flex border-bottom border-1 border-gray">
@@ -290,244 +294,188 @@
                         style="top: -87px"
                         ></div>
                     <h2 class="fs-2 mt-3 pt-md-4">Đánh giá</h2>
-                    <div
-                        class="
-                        d-flex
-                        align-items-center
-                        flex-column flex-sm-row
-                        "
-                        >
-                        <div
-                            class="
-                            left
-                            d-flex
-                            flex-column
-                            justify-content-center
-                            "
-                            >
-                            <div class="star">
-                                <i
-                                    class="fas fa-star fs-5"
-                                    style="color: #0aa2c0"
-                                    ></i>
-                                <i
-                                    class="fas fa-star fs-5"
-                                    style="color: #0aa2c0"
-                                    ></i>
-                                <i
-                                    class="fas fa-star fs-5"
-                                    style="color: #0aa2c0"
-                                    ></i>
-                                <i
-                                    class="fas fa-star fs-5"
-                                    style="color: #0aa2c0"
-                                    ></i>
-                                <i
-                                    class="far fa-star fs-5"
-                                    style="color: #0aa2c0"
-                                    ></i>
-                            </div>
-                            <p class="text-gray mb-0">4.5 out of 5.0 Stars</p>
-                        </div>
-                        <div class="right ms-3 ms-md-5">
-                            <div class="d-flex align-items-center my-1 my-md-2">
-                                <span class="me-2 me-md-4">5 Star</span>
-                                <div
-                                    class="progress"
-                                    style="width: 200px; height: 10px"
-                                    >
-                                    <div
-                                        class="progress-bar"
-                                        role="progressbar"
-                                        style="width: 85%"
-                                        aria-valuenow="85"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                        ></div>
-                                </div>
-                                <span class="ms-2 ms-md-4"> 85% (85) </span>
-                            </div>
-                            <div class="d-flex align-items-center my-1 my-md-2">
-                                <span class="me-2 me-md-4">4 Star</span>
-                                <div
-                                    class="progress"
-                                    style="width: 200px; height: 10px"
-                                    >
-                                    <div
-                                        class="progress-bar"
-                                        role="progressbar"
-                                        style="width: 10%"
-                                        aria-valuenow="10"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                        ></div>
-                                </div>
-                                <span class="ms-2 ms-md-4"> 10% (10) </span>
-                            </div>
-                            <div class="d-flex align-items-center my-1 my-md-2">
-                                <span class="me-2 me-md-4">3 Star</span>
-                                <div
-                                    class="progress"
-                                    style="width: 200px; height: 10px"
-                                    >
-                                    <div
-                                        class="progress-bar"
-                                        role="progressbar"
-                                        style="width: 5%"
-                                        aria-valuenow="5"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                        ></div>
-                                </div>
-                                <span class="ms-2 ms-md-4"> 5% (5) </span>
-                            </div>
-                            <div class="d-flex align-items-center my-1 my-md-2">
-                                <span class="me-2 me-md-4">2 Star</span>
-                                <div
-                                    class="progress"
-                                    style="width: 200px; height: 10px"
-                                    >
-                                    <div
-                                        class="progress-bar"
-                                        role="progressbar"
-                                        style="width: 0%"
-                                        aria-valuenow="0"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                        ></div>
-                                </div>
-                                <span class="ms-2 ms-md-4"> 0% (0) </span>
-                            </div>
-                            <div class="d-flex align-items-center my-1 my-md-2">
-                                <span class="me-2 me-md-4">1 Star</span>
-                                <div
-                                    class="progress"
-                                    style="width: 200px; height: 10px"
-                                    >
-                                    <div
-                                        class="progress-bar"
-                                        role="progressbar"
-                                        style="width: 0%"
-                                        aria-valuenow="0"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                        ></div>
-                                </div>
-                                <span class="ms-2 ms-md-4"> 0% (0) </span>
-                            </div>
-                        </div>
-                    </div>
+                    <!--                    <div
+                                            class="
+                                            d-flex
+                                            align-items-center
+                                            flex-column flex-sm-row
+                                            "
+                                            >
+                                            <div
+                                                class="
+                                                left
+                                                d-flex
+                                                flex-column
+                                                justify-content-center
+                                                "
+                                                >
+                                                <div class="star">
+                                                    <i
+                                                        class="fas fa-star fs-5"
+                                                        style="color: #0aa2c0"
+                                                        ></i>
+                                                    <i
+                                                        class="fas fa-star fs-5"
+                                                        style="color: #0aa2c0"
+                                                        ></i>
+                                                    <i
+                                                        class="fas fa-star fs-5"
+                                                        style="color: #0aa2c0"
+                                                        ></i>
+                                                    <i
+                                                        class="fas fa-star fs-5"
+                                                        style="color: #0aa2c0"
+                                                        ></i>
+                                                    <i
+                                                        class="far fa-star fs-5"
+                                                        style="color: #0aa2c0"
+                                                        ></i>
+                                                </div>
+                                                <p class="text-gray mb-0">4.5 out of 5.0 Stars</p>
+                                            </div>
+                                            <div class="right ms-3 ms-md-5">
+                                                <div class="d-flex align-items-center my-1 my-md-2">
+                                                    <span class="me-2 me-md-4">5 Star</span>
+                                                    <div
+                                                        class="progress"
+                                                        style="width: 200px; height: 10px"
+                                                        >
+                                                        <div
+                                                            class="progress-bar"
+                                                            role="progressbar"
+                                                            style="width: 85%"
+                                                            aria-valuenow="85"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                            ></div>
+                                                    </div>
+                                                    <span class="ms-2 ms-md-4"> 85% (85) </span>
+                                                </div>
+                                                <div class="d-flex align-items-center my-1 my-md-2">
+                                                    <span class="me-2 me-md-4">4 Star</span>
+                                                    <div
+                                                        class="progress"
+                                                        style="width: 200px; height: 10px"
+                                                        >
+                                                        <div
+                                                            class="progress-bar"
+                                                            role="progressbar"
+                                                            style="width: 10%"
+                                                            aria-valuenow="10"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                            ></div>
+                                                    </div>
+                                                    <span class="ms-2 ms-md-4"> 10% (10) </span>
+                                                </div>
+                                                <div class="d-flex align-items-center my-1 my-md-2">
+                                                    <span class="me-2 me-md-4">3 Star</span>
+                                                    <div
+                                                        class="progress"
+                                                        style="width: 200px; height: 10px"
+                                                        >
+                                                        <div
+                                                            class="progress-bar"
+                                                            role="progressbar"
+                                                            style="width: 5%"
+                                                            aria-valuenow="5"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                            ></div>
+                                                    </div>
+                                                    <span class="ms-2 ms-md-4"> 5% (5) </span>
+                                                </div>
+                                                <div class="d-flex align-items-center my-1 my-md-2">
+                                                    <span class="me-2 me-md-4">2 Star</span>
+                                                    <div
+                                                        class="progress"
+                                                        style="width: 200px; height: 10px"
+                                                        >
+                                                        <div
+                                                            class="progress-bar"
+                                                            role="progressbar"
+                                                            style="width: 0%"
+                                                            aria-valuenow="0"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                            ></div>
+                                                    </div>
+                                                    <span class="ms-2 ms-md-4"> 0% (0) </span>
+                                                </div>
+                                                <div class="d-flex align-items-center my-1 my-md-2">
+                                                    <span class="me-2 me-md-4">1 Star</span>
+                                                    <div
+                                                        class="progress"
+                                                        style="width: 200px; height: 10px"
+                                                        >
+                                                        <div
+                                                            class="progress-bar"
+                                                            role="progressbar"
+                                                            style="width: 0%"
+                                                            aria-valuenow="0"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                            ></div>
+                                                    </div>
+                                                    <span class="ms-2 ms-md-4"> 0% (0) </span>
+                                                </div>
+                                            </div>
+                                        </div>-->
 
                     <!-- List review -->
                     <div class="list-review mt-2 mt-md-3 mt-lg-4">
-                        <div class="item-review row mb-2 mb-md-3">
-                            <div class="col-10 d-flex align-items-start">
-                                <div style="flex: 2">
-                                    <h4 class="fs-4 mb-0">
-                                        Lucy
-                                        <i
-                                            class="fas fa-check-circle fs-6"
-                                            style="color: #0aa2c0"
-                                            ></i>
-                                    </h4>
-                                    <p class="m-0">Binh Phuoc, VN</p>
-                                </div>
-                                <div class="content mt-2" style="flex: 6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="star">
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="far fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
+                        <c:if test="${ratings != null && ratings.size()!= 0}">
+                            <c:forEach items="${ratings}" var="rating">
+                                <div class="item-review row mb-2 mb-md-3">
+                                    <div class="col-10 d-flex align-items-start">
+                                        <div style="flex: 2">
+                                            <h4 class="fs-4 mb-0">
+                                                ${rating.user.firstName} ${rating.user.lastName}
+                                                <i
+                                                    class="fas fa-check-circle fs-6"
+                                                    style="color: #0aa2c0"
+                                                    ></i>
+                                            </h4>
+                                            <p class="m-0">Binh Phuoc, VN</p>
                                         </div>
-                                        <span class="date ms-2 ms-md-3"
-                                              >Dec 08, 2021</span
-                                        >
-                                    </div>
-                                    <p class="fs-6">
-                                        This is the way that the whole online
-                                        auction experience should work
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-2 image-review">
-                                <img
-                                    src="<c:url value="/img/item/item-1.jpg" />"
-                                    alt=""
-                                    class="object-fit-cover"
-                                    />
-                            </div>
-                        </div>
-                        <div class="item-review row mb-2 mb-md-3">
-                            <div class="col-10 d-flex align-items-start">
-                                <div style="flex: 2">
-                                    <h4 class="fs-4 mb-0">
-                                        Lucy
-                                        <i
-                                            class="fas fa-check-circle fs-6"
-                                            style="color: #0aa2c0"
-                                            ></i>
-                                    </h4>
-                                    <p class="m-0">Binh Phuoc, VN</p>
-                                </div>
-                                <div class="content mt-2" style="flex: 6">
-                                    <div class="d-flex align-items-center">
-                                        <div class="star">
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="fas fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
-                                            <i
-                                                class="far fa-star fs-6"
-                                                style="color: #0aa2c0"
-                                                ></i>
+                                        <div class="content mt-2" style="flex: 6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="star star-review" data-star="${rating.star}">
+                                                </div>
+                                                <span class="date ms-2 ms-md-3 time-feed">${rating.createAt}</span>
+                                            </div>
+                                            <p class="fs-6">
+                                                ${rating.content}
+                                            </p>
                                         </div>
-                                        <span class="date ms-2 ms-md-3"
-                                              >Dec 08, 2021</span
-                                        >
                                     </div>
-                                    <p class="fs-6">
-                                        This is the way that the whole online
-                                        auction experience should work
-                                    </p>
+                                    <div class="col-2 image-review">
+                                        <img
+                                            src="${rating.user.avatar}"
+                                            alt=""
+                                            class="object-fit-cover"
+                                            />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-2 image-review">
-                                <img
-                                    src="<c:url value="/img/item/item-3.jpg" />"
-                                    alt=""
-                                    class="object-fit-cover"
-                                    />
-                            </div>
-                        </div>
+                            </c:forEach>
+                        </c:if>
+
+                        <script>
+                            let starEles = document.getElementsByClassName("star-review");
+                            for (let starEle of starEles) {
+                                let star = parseInt(starEle.getAttribute("data-star"));
+                                let unstar = 5 - star;
+                                let content = "";
+
+                                for (let i = 1; i <= star; i++) {
+                                    content += `<i class="fas fa-star fs-6" style="color: #0aa2c0"></i>`;
+                                }
+                                for (let i = 1; i <= unstar; i++) {
+                                    content += `<i class="far fa-star fs-6" style="color: #0aa2c0"></i>`;
+                                }
+                                starEle.innerHTML = content;
+                            }
+                        </script>
                     </div>
                     <!-- End List review -->
                 </div>
@@ -599,348 +547,105 @@
         </div>
         <!-- End Main Content  -->
 
-        <!-- Friends -->
-        <div class="col-lg-2 p-0 flex-column" style="display: inherit">
-            <div class="position-lg-sticky d-none d-lg-block" style="top: 78px">
-                <div
-                    class="
-                    d-none d-lg-flex
-                    justify-content-between
-                    px-2
-                    mt-lg-3
-                    "
-                    >
-                    <h4 class="text-center">Người liên hệ</h4>
+        <!-- Notification -->
+        <div class="col-lg-2 p-0 flex-column" style="display: inherit;">
+            <div class="position-lg-sticky" style="top: 78px;">
+                <div class="d-none d-lg-flex justify-content-between px-2 mt-lg-3">
+                    <h4 class="text-center">Thông báo</h4>
                 </div>
-                <ul
-                    class="
-                    w-100
-                    list-group
-                    cus-content-friends
-                    list-group-flush
-                    d-flex
-                    flex-row flex-lg-column
-                    overflow-auto
-                    pb-2
-                    "
-                    style="top: 101px"
-                    >
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-2.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Nguyễn Thị Hồng Hà</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-1.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Dung Ly</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-3.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Uyen Nguyen</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-4.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Thao Trang</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-2.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Ngoc Ha</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-1.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Dung Ly</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-3.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Uyen Nguyen</p>
-                    </li>
-                    <li
-                        class="
-                        list-group-item
-                        d-flex
-                        align-items-center
-                        bg-none
-                        "
-                        >
-                        <div class="me-3 position-relative">
-                            <img
-                                src="public/assets/img/avatar/user-4.jpg"
-                                height="48px"
-                                width="48px"
-                                class="
-                                object-fit-cover
-                                avatar
-                                rounded-circle
-                                border
-                                "
-                                alt="user"
-                                />
-                            <span
-                                class="
-                                position-absolute
-                                bg-success
-                                rounded-circle
-                                "
-                                style="
-                                width: 12px;
-                                height: 12px;
-                                bottom: 1px;
-                                right: 1px;
-                                "
-                                >
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </div>
-                        <p class="mb-0">Thao Trang</p>
-                    </li>
-                </ul>
+                <c:if test="${currentUser != null && notifications != null && notifications.size() != 0}">
+                    <ul id="notification-content" class="w-100 list-group cus-content-friends list-group-flush d-flex flex-row flex-lg-column overflow-auto pb-2" style="top: 101px;" >
+                        <c:forEach items="${notifications}" var="message">
+                            <li class="list-group-item-none shadow-sm border border-1 p-2">
+                                <div class="d-flex justify-content-between">
+                                    <a class="fs-6 mb-0" style="white-space: nowrap;overflow: hidden;" href="${message.url != null ? message.url : 'javascript::'}">
+                                        ${message.title}
+                                    </a>
+
+                                </div>
+
+                                <p class="mb-0 text-muted" style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+                                    ${message.content}
+                                </p>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
             </div>
         </div>
-        <!-- End Friends -->
+        <!-- End Notification -->
     </div>
 </div>
 <!-- End Content -->
+
+
+
+<!--Modal report-->
+<c:if test="${currentUser != null && typeReports != null}">
+    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body p-0 position-relative">
+                    <button type="button" class="btn-close position-absolute top-0 end-0 z-index-2000 p-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="card m-0 w-100 border-0">
+                        <div class="card-body my-3">
+                            <h3 class="mb-2 mb-md-3 m-auto">Báo cáo</h3>
+                            <form id="form-report" name="form-report">
+                                <div class="textInvalidForm" id="errorMessageReport">
+
+                                </div>
+                                <select class="form-select mb-md-3 mb-2" name="typeReportId" id="typeReportId" required>
+                                    <option selected value="${typeReports[0].id}">${typeReports[0].name}</option>
+                                    <c:forEach items="${typeReports}" var="typeReport" begin="1" >
+                                        <option value="${typeReport.id}">${typeReport.name}</option>
+                                    </c:forEach>
+                                </select>
+                                <div class="mb-2 mb-md-3">
+                                    <textarea class="form-control w-100"
+                                              name="content"
+                                              id="content"
+                                              placeholder="Nội dung báo cáo"
+                                              required
+                                              rows="3"
+                                              ></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary text-uppercase w-100 mt-3">Gửi</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelector("#form-report button[type='submit']")
+                .addEventListener("click", function (event) {
+                    event.preventDefault();
+                    let reportModal = document.getElementById("reportModal");
+                    let myForm = document.getElementById('form-report');
+                    let formData = new FormData(myForm);
+                    if (!formData.get("content")) {
+                        document.getElementById("errorMessageReport").textContent = "Vui lòng điền nội dung"
+                        return;
+                    }
+                    let url = "/laptrinhjava/api/add-report/" + myForm.getAttribute('data-user-report-id');
+                    let body = JSON.stringify(Object.fromEntries(formData));
+                    fetch(url, {
+                        method: "post",
+                        body,
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }).then((response) => {
+                        if (response.status !== 200) {
+                            document.getElementById("errorMessageReport").textContent = "Đã có lỗi xảy ra vui lòng thử lại"
+                        }
+                        bootstrap.Modal.getInstance(document.getElementById('reportModal')).hide();
+                        document.getElementById("btn-report").textContent = "Đã gửi báo cáo"
+                        document.getElementById("btn-report").setAttribute("disabled", "true")
+                    })
+                });
+    </script>
+</c:if>
+<!--End Modal report-->

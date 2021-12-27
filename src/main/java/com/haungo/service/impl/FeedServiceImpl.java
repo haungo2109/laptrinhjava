@@ -2,12 +2,10 @@ package com.haungo.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.haungo.pojos.Feed;
-import com.haungo.pojos.FeedComment;
-import com.haungo.pojos.FeedImage;
-import com.haungo.pojos.Hashtag;
+import com.haungo.pojos.*;
 import com.haungo.repository.FeedRepository;
 import com.haungo.service.FeedService;
+import com.haungo.service.NotificationService;
 import com.haungo.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,7 @@ public class FeedServiceImpl implements FeedService {
 
     @Autowired private FeedRepository feedRepository;
     @Autowired private Cloudinary cloudinary;
+    @Autowired private NotificationService notificationService;
 
     @Override
     public List<Feed> getFeeds(Map<String, String> params) {
@@ -102,8 +101,18 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public boolean addLike(Integer id, Integer uid) {
-        return this.feedRepository.addLike(id, uid);
+    public boolean addLike(User user, Integer id, Integer uid) {
+        if (this.feedRepository.addLike(id, uid) == false) {
+            return false;
+        }
+        Feed feed = this.feedRepository.getFeedById(id);
+        if (feed.getUser().getId() != user.getId()){
+            String content = Notification.genContent(user, "thích bài viết ") + feed.getContent();
+            Notification notification = new Notification(Notification.LikeMess, content, feed.getUser());
+            this.notificationService.addNotification(notification);
+        }
+
+        return true;
     }
 
     @Override

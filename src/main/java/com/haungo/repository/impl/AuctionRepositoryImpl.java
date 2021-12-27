@@ -149,14 +149,10 @@ public class AuctionRepositoryImpl implements AuctionRepository {
             auction.setAcceptPrice(auctionComment.getPrice());
             session.update(auction);
             Query auctionCommentQuery = session.createQuery("UPDATE AuctionComment A SET A.statusTransaction=:status WHERE A.id =:id ");
-//            Query auctionQuery = session.createQuery("UPDATE Auction A SET A.statusAuction=:status, A.acceptPrice=:price WHERE A.id=:id");
-//
+
             auctionCommentQuery.setParameter("status", StatusTransaction.inprocess.toString());
             auctionCommentQuery.setParameter("id", commentId);
-//            auctionQuery.setParameter("status", StatusTransaction.inprocess.toString());
-//            auctionQuery.setParameter("id", auctionId);
-//            auctionQuery.setParameter("price", auctionComment.getPrice());
-//
+
             if (auctionCommentQuery.executeUpdate() == 1)
                 return true;
         } catch (HibernateException ex) {

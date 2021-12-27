@@ -5,10 +5,7 @@
 package com.haungo.controllers;
 
 import com.haungo.pojos.*;
-import com.haungo.service.AuctionCommentService;
-import com.haungo.service.AuctionService;
-import com.haungo.service.CategoryService;
-import com.haungo.service.NotificationService;
+import com.haungo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -42,6 +40,7 @@ public class AuctionController {
     @Autowired private CategoryService categoryService;
     @Autowired private AuctionCommentService auctionCommentService;
     @Autowired private NotificationService notificationService;
+    @Autowired private TypeReportService typeReportService;
 
     @ModelAttribute
     public void commonAttrs(Model model, HttpSession session) {
@@ -102,7 +101,7 @@ public class AuctionController {
             List<AuctionComment> auctionComments = this.auctionCommentService.getMyAuctionCommentByAuctionId(auction.getId(), user.getId());
             model.addAttribute("comments", auctionComments);
         }
-
+        model.addAttribute("typeReports", this.typeReportService.getTypeReports());
         model.addAttribute("notifications", this.notificationService.getNotificationByUid(user.getId()));
         return "auctionDetail";
     }

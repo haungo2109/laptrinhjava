@@ -14,17 +14,21 @@ function connect() {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
 
-        stompClient.subscribe("/user/topic/pushNotification", function (notification) {
-            const message = JSON.parse(notification.body);
-            console.info({message});            
+        stompClient.subscribe("/user/topic/pushNotification", function (res) {
+            const notification = JSON.parse(res.body);
+            console.info({notification});
             const mess = {
-                title: message.title,
+                title: notification.title,
                 options: {
-                    body: message.content,
+                    body: notification.content,
                 }
             }
             showNotification(mess);
-            showMessage(message);
+            showMessage(notification);
+        });
+        stompClient.subscribe('/user/topic/chatMessages', function (res) {
+            const message = JSON.parse(res.body);
+            console.info({message});
         });
     });
 
@@ -41,7 +45,11 @@ function disconnect() {
         stompClient.disconnect();
     }
 }
-
+function sendMessage(uid) {
+    stompClient.send("/laptrinhjava/app/message", {}, JSON.stringify({'content': "sended ahihi", 'toUserId': uid}));
+    stompClient.send("/app/message", {}, {'content': "sended ahihi", 'toUserId': uid});
+    stompClient.send("/app/send-message", {}, JSON.stringify({'content': "sended ahihi", 'toUserId': uid}));
+}
 function showNotification(mess) {
     console.log("Message: ", mess)
     if (!("Notification" in window)) {
@@ -55,8 +63,8 @@ function showNotification(mess) {
 
 function showMessage(message) {
     let contentEle = document.getElementById("notification-content");
-    contentEle.innerHTML = 
-    `<li class="list-group-item-none shadow-sm border border-1 p-2">
+    contentEle.innerHTML =
+            `<li class="list-group-item-none shadow-sm border border-1 p-2">
         <div class="d-flex justify-content-between">
             <a class="fs-6 mb-0" style="white-space: nowrap;overflow: hidden;" href="${message.url == null ? 'javascript::' : message.url}">
                 ${message.title}
@@ -68,12 +76,7 @@ function showMessage(message) {
             ${message.content}
         </p>
     </li>` + contentEle.innerHTML;
-        
-}
 
-function sendMessage() {
-    console.log("sending message");
-    stompClient.send("/ws/message", {}, JSON.stringify({'messageContent': $("#message").val()}));
 }
 
 function sendPrivateMessage() {

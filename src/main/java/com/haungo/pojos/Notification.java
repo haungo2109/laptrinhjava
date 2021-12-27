@@ -11,6 +11,7 @@ public class Notification implements Serializable {
     public static final String CommentFeedMess = "Có người bình luận bài viết của bạn";
     public static final String WonAuction = "Bạn đã đấu giá thành công";
     public static final String AddAuctionComment = "Có người tham gia đấu giá";
+    public static final String AddMessage = "Bạn có tin nhắn";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

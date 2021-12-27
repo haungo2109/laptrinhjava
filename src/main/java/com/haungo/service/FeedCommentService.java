@@ -1,6 +1,7 @@
 package com.haungo.service;
 
 import com.haungo.pojos.FeedComment;
+import com.haungo.pojos.User;
 
 import java.util.List;
 

@@ -52,11 +52,7 @@ public class ApiFeedController {
         Integer id = Integer.parseInt(params.getOrDefault("feedId", null));
         User user = (User) session.getAttribute("currentUser");
 
-        if (id != null && this.feedService.addLike(id, user.getId())) {
-            Feed feed = this.feedService.getFeedById(id);
-            String content = Notification.genContent(user, "thích bài viết ") + feed.getContent();
-            Notification notification = new Notification(Notification.LikeMess, content, feed.getUser());
-            this.notificationService.addNotification(notification);
+        if (id != null && this.feedService.addLike(user, id, user.getId())) {
             return HttpStatus.OK;
         }
         else
@@ -84,19 +80,18 @@ public class ApiFeedController {
         if (feedComment1 == null){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        if (!user.getId().equals(feed.getUser().getId())) {
-            String content = Notification.genContent(user, "đã bình luận ") + feedComment1.getContent();
-            Notification notification = new Notification(Notification.CommentFeedMess, content, feed.getUser());
-            this.notificationService.addNotification(notification);
-        }
+
         return new ResponseEntity<FeedComment>(feedComment1, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/api/update-feed", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Feed> updateFeed(@RequestBody Feed feed, HttpSession session) {
-        if (feed.isCanUpdate() == false) return new ResponseEntity(feed, HttpStatus.BAD_REQUEST);
+    @PostMapping(value = "/api/update-feed", produces = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public HttpStatus updateFeed(@RequestBody Feed feed, HttpSession session) {
+        if (feed.isCanUpdate() == false) return HttpStatus.BAD_REQUEST;
+        feed.setId(Integer.parseInt(feed.getFeedId()));
         Feed rs = this.feedService.updateFeed(feed);
-        return new ResponseEntity<>(rs, HttpStatus.OK);
+        if (rs!= null)
+            return HttpStatus.OK;
+        return HttpStatus.BAD_REQUEST;
     }
 
     @DeleteMapping(value = "/api/remove-comment/{commentId}")

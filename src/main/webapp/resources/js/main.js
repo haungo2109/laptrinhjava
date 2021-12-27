@@ -64,91 +64,54 @@ function showReport(uid) {
     modelReport.setAttribute("data-user-report-id", uid);
     document.querySelector("#reportModal #content").value = "";
 }
+let feedEdit = document.querySelector("#form-edit-feed button[type='submit']");
+if (feedEdit)
+    feedEdit.addEventListener("click", function (event) {
+        event.preventDefault();
+        let id = document.querySelector("#editFeedModal").getAttribute("data-feed-id");
+        let content = document.querySelector("#editFeedModal textarea").value;
+        let files = document.querySelector("#editFeedModal input[name='files']").files;
 
-//function updateFeed(target) {
-//    let id = document.querySelector("#editFeedModal").getAttribute("data-feed-id");
-//    let url = "/laptrinhjava/api/update-feed";
-//    let body = new FormData(target);
-//    body.append('id', id);
-//
-//    fetch(url, {
-//        method: "post",
-//        body,
-//        headers: {
-//            "Content-Type": "multipart/form-data"
-//        }
-//    })
-//            .then((response) => {
-//                if (response.status !== 200) {
-//                    console.error(response.message);
-//                    return;
-//                }
-//
-//                return response.json();
-//            }).then(feed => {
-//        if (!feed)
-//            return;
-//        document.getElementById(`feed-content-${feed.id}`).textContent = feed.content;
-//        if (feed.images && feed.images.length) {
-//            let innerImage = '';
-//            images.forEach((image, index) => {
-//                innerImage += `<div class="carousel-item ${index == 0 ? "active" : ""}" style="height: 345px; overflow: hidden;" >
-//                                                    <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="image">
-//                                                </div`
-//            });
-//            document.getElementById(`feed-images-${feed.id}`).innerHTML = innerImage;
-//        }
-//        document.querySelector("#form-edit-feed button[type='submit']").textContent = "Đã lưu";
-//        document.querySelector("#form-edit-feed button[type='submit']").setAttribute("disabled", true);
-//    });
-//}
+        let url = "/laptrinhjava/api/update-feed";
 
-document.querySelector("#form-edit-feed button[type='submit']").addEventListener("click", function (event) {
-    event.preventDefault();
-    let id = document.querySelector("#editFeedModal").getAttribute("data-feed-id");
-    let content = document.querySelector("#editFeedModal textarea").value;
-    let files = document.querySelector("#editFeedModal input[name='files']").files;
-
-    let url = "/laptrinhjava/api/update-feed";
-
-    let body = new FormData()
-    body.append('id', parseInt(id));
-    body.append('content', content);
-    if (files.length != 0) {
-        body.append("files", files)
-    }
-    console.log(JSON.stringify(Object.fromEntries(body)));
-    fetch(url, {
-        method: "post",
-//        body: JSON.stringify(Object.fromEntries(body)),
-        body,
-        headers: {
-            "Content-Type": "application/json"
-//            "Content-Type": "multipart/form-data"
-        }}
-    ).then((response) => {
-        if (response.status !== 200) {
-            return;
+        let body = new FormData()
+        body.append('feedId', parseInt(id));
+        body.append('content', content);
+        if (files.length != 0) {
+            body.append("files", files)
         }
+        console.log(JSON.stringify(Object.fromEntries(body)));
+        fetch(url, {
+            method: "post",
+            body: JSON.stringify(Object.fromEntries(body)),
+//            body,
+            headers: {
+                "Content-Type": "application/json"
+//            "Content-Type": "multipart/form-data"
+            }}
+        ).then((response) => {
+            if (response.status !== 200) {
+                return;
+            }
 
-        return response.json();
-    }).then(feed => {
-        if (!feed)
-            return;
-        document.getElementById(`feed-content-${feed.id}`).textContent = feed.content;
-        if (feed.images && feed.iamge.length) {
-            let innerImage = '';
-            images.forEach((image, index) => {
-                innerImage += `<div class="carousel-item ${index == 0 ? "active" : ""}" style="height: 345px; overflow: hidden;" >
+            return response.json();
+        }).then(feed => {
+            if (!feed)
+                return;
+            document.getElementById(`feed-content-${feed.id}`).textContent = feed.content;
+            if (feed.images && feed.iamge.length) {
+                let innerImage = '';
+                images.forEach((image, index) => {
+                    innerImage += `<div class="carousel-item ${index == 0 ? "active" : ""}" style="height: 345px; overflow: hidden;" >
                                     <img height="345px" src="${image.image}" class="d-block rounded rounded-3 object-fit-cover w-100 h-100" alt="image">
                                 </div`
-            });
-            document.getElementById(`feed-images-${feed.id}`).innerHTML = innerImage;
-        }
-        document.querySelector("#form-edit-feed button[type='submit']").textContent = "Đã lưu";
-        document.querySelector("#form-edit-feed button[type='submit']").setAttribute("disabled", true);
+                });
+                document.getElementById(`feed-images-${feed.id}`).innerHTML = innerImage;
+            }
+            document.querySelector("#form-edit-feed button[type='submit']").textContent = "Đã lưu";
+            document.querySelector("#form-edit-feed button[type='submit']").setAttribute("disabled", true);
+        });
     });
-});
 
 //window.onload = function () {
 //    let formUpdateFeed = document.querySelector("#form-edit-feed button[type='submit']");
@@ -260,8 +223,8 @@ function sendFeedComment(feedId, target) {
         let avatar = target.getAttribute("data-avatar");
         let name = target.getAttribute("data-username");
         let uid = target.getAttribute("data-userId");
-
-        document.getElementById(`list-comment-${feedId}`).innerHTML += `
+        let listFeed = document.getElementById(`list-comment-${feedId}`);
+        listFeed.innerHTML = `
         <div class="d-flex mb-2 item-comment px-3 justify-content-between" id="item-comment-${comment.id}">
                 <div class="d-flex">
                     <div class="d-flex me-2">
@@ -277,7 +240,7 @@ function sendFeedComment(feedId, target) {
                     ${comment.user.id == uid ? `<button class='btn btn-danger' onclick="removeComment(${comment.id})" >Xóa</button>` : ""}
                 </div>
             </div>
-        `
+        ` + listFeed.innerHTML;
     })
 }
 
